@@ -1,10 +1,11 @@
 import { Component, inject, signal } from '@angular/core';
 import { TaskList } from './components/taskList/taskList';
 import { AuthService } from './services/authService';
+import { Menu } from './components/menu/menu';
 
 @Component({
   selector: 'app-root',
-  imports: [TaskList],
+  imports: [TaskList, Menu],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

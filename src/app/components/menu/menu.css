@@ -1,0 +1,24 @@
+#menu-footer > div > i {
+    padding-right: 5px;
+}
+
+#menu-items {
+    margin-bottom: 50%;
+}
+
+#menu-items a.active {
+    background-color: rgb(211, 209, 209);
+    border-radius: 5px;
+}
+
+.vertical-list a {
+    display: block;
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+}
+
+.vertical-list a:hover {
+    background-color: rgb(211, 209, 209);
+    border-radius: 5px;
+}
