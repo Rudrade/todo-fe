@@ -1,9 +1,15 @@
 import { Routes } from '@angular/router';
-import { App } from './app.component';
+import { TaskList } from './components/taskList/taskList';
 
 export const routes: Routes = [
   {
-    path: '',
-    component: App,
+    path: 'tasks',
+    children: [
+      {
+        path: '',
+        component: TaskList,
+        outlet: 'task-list',
+      },
+    ],
   },
 ];
