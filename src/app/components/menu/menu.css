@@ -1,24 +1,21 @@
-#menu-footer > div > i {
-    padding-right: 5px;
+li {
+  --bs-icon-link-transform: translate3d(0, -0.125rem, 0);
 }
 
-#menu-items {
-    margin-bottom: 50%;
+li:hover {
+  background-color: lightgray;
+  cursor: pointer;
+  border-radius: 5px;
 }
 
-#menu-items a.active {
-    background-color: rgb(211, 209, 209);
-    border-radius: 5px;
+li > .active {
+  background-color: lightgray;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 100%;
 }
 
-.vertical-list a {
-    display: block;
-    text-decoration: none;
-    color: black;
-    padding: 5px;
-}
-
-.vertical-list a:hover {
-    background-color: rgb(211, 209, 209);
-    border-radius: 5px;
+li a {
+  text-decoration: none;
+  color: inherit;
 }

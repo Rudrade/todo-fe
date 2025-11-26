@@ -1,13 +1,8 @@
-import { Component } from "@angular/core";
-import { MatFormField, MatLabel } from "@angular/material/form-field";
-import { MatInputModule } from "@angular/material/input";
+import { Component } from '@angular/core';
 
 @Component({
-    selector: 'menu',
-    templateUrl: './menu.html',
-    styleUrls: ['./menu.css'],
-    imports: [MatFormField, MatLabel, MatInputModule]
+  selector: 'app-menu',
+  templateUrl: './menu.html',
+  styleUrls: ['./menu.css'],
 })
-export class Menu {
-
-}
+export class Menu {}
