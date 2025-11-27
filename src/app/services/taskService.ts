@@ -1,30 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Task } from '../models/task';
-import { DestroyRef, inject, Injectable, OnInit, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { Observable } from 'rxjs';
+import { TaskListResponse } from '../models/taskListResponse';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TaskService implements OnInit {
+export class TaskService {
   private httpClient = inject(HttpClient);
-  private destroyRef = inject(DestroyRef);
+  tasks = signal<Task[]>([]);
 
-  private tasks = signal<Task[]>([]);
-  allTasks = this.tasks.asReadonly();
-
-  ngOnInit(): void {
-    this.fetchTasks();
+  fetchTasks(filter: string | undefined): Observable<TaskListResponse> {
+    return this.httpClient.get<TaskListResponse>('http://localhost:8080/todo/api/task', {
+      params: { filter: filter ? filter : '' },
+    });
   }
 
-  private fetchTasks(): void {
-    const subscription = this.httpClient
-      .get<Task[]>('http://localhost:8080/todo/api/all')
-      .subscribe({
-        next: (data) => this.tasks.set(data),
-      });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
+  removeTask(id: string) {
+    return this.httpClient.delete('http://localhost:8080/todo/api/task/remove/' + id);
   }
 }
