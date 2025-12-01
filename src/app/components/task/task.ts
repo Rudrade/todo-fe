@@ -7,5 +7,5 @@ import { Component, input } from '@angular/core';
   styleUrl: './task.css',
 })
 export class TaskComponent {
-  id = input.required<string>();
+  // id = input.required<string>();
 }

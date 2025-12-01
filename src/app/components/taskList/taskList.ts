@@ -1,12 +1,13 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { TaskService } from '../../services/taskService';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterOutlet, RouterLinkWithHref } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './taskList.html',
   styleUrls: ['./taskList.css'],
+  imports: [RouterOutlet, RouterLinkWithHref],
 })
 export class TaskList implements OnInit {
   private taskService = inject(TaskService);
@@ -14,13 +15,12 @@ export class TaskList implements OnInit {
   private route = inject(ActivatedRoute);
 
   private currentFilter = '';
+  private currentSearchTearm = '';
 
   tasks = this.taskService.tasks;
   taskCount = signal<Number | undefined>(undefined);
   isFetchingData = signal<boolean>(false);
 
-  // TODO: Click renders details form component (Incluing new task)
-  // TODO: Filter all
   // TODO: Pagination
   // TODO: Fix menu active window
   // TODO: Impl notifications
@@ -29,29 +29,51 @@ export class TaskList implements OnInit {
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (param) => {
         this.currentFilter = param['filter'];
-        this.fetchTasks(this.currentFilter);
+        this.currentSearchTearm = param['searchTerm'];
+        console.log('[TaskList.Param] ', param);
+        this.fetchTasks(this.currentFilter, this.currentSearchTearm);
       },
     });
   }
 
-  private fetchTasks(filter: string) {
+  private fetchTasks(filter: string, searchTearm: string | undefined) {
     this.isFetchingData.set(true);
-    this.taskService.fetchTasks(filter).subscribe({
-      next: (response) => {
-        this.tasks.set(response.tasks);
-        this.taskCount.set(response.count);
-      },
-      complete: () => {
-        this.isFetchingData.set(false);
-      },
-    });
+    this.taskService
+      .fetchTasks(filter, searchTearm)
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe({
+        next: (response) => {
+          console.log('[TaskList fetchTasks next] ', response);
+          this.tasks.set(response.tasks);
+          this.taskCount.set(response.count);
+        },
+        complete: () => {
+          console.log('[TaskList fetchTasks complete] ...');
+          this.isFetchingData.set(false);
+        },
+        error: (error) => {
+          console.log('[FetchTasks Error] ', error);
+        },
+      });
   }
 
   onCompleteTask(id: string) {
     const subscription = this.taskService.removeTask(id).subscribe({
-      complete: () => this.fetchTasks(this.currentFilter),
+      complete: () => this.fetchTasks(this.currentFilter, this.currentSearchTearm),
     });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
+
+  get filterName() {
+    if (this.currentFilter === 'upcoming') {
+      return 'Upcoming';
+    } else if (this.currentFilter === 'today') {
+      return 'Today';
+    } else if (this.currentFilter === 'search') {
+      return 'Search';
+    } else {
+      return 'All';
+    }
   }
 }

@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { RouterLink, RouterLinkActive } from '@angular/router';
+import { Component, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
@@ -7,4 +7,21 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   styleUrls: ['./menu.css'],
   imports: [RouterLink, RouterLinkActive],
 })
-export class Menu {}
+export class Menu {
+  private router = inject(Router);
+
+  onSearchTasks(searchTerm: string) {
+    console.log('[SearchTerm] ', searchTerm);
+
+    if (searchTerm === '') {
+      this.router.navigate(['tasks']);
+    } else {
+      this.router.navigate(['tasks'], {
+        queryParams: {
+          filter: 'search',
+          searchTerm,
+        },
+      });
+    }
+  }
+}
