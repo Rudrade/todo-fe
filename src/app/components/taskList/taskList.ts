@@ -2,6 +2,7 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { TaskService } from '../../services/taskService';
 import { ActivatedRoute, RouterOutlet, RouterLinkWithHref } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AlertService } from '../../services/alert.service';
 
 @Component({
   selector: 'app-task-list',
@@ -13,6 +14,7 @@ export class TaskList implements OnInit {
   private taskService = inject(TaskService);
   private destroyRef = inject(DestroyRef);
   private route = inject(ActivatedRoute);
+  private alertService = inject(AlertService);
 
   private currentFilter = '';
   private currentSearchTearm = '';
@@ -21,9 +23,8 @@ export class TaskList implements OnInit {
   taskCount = signal<Number | undefined>(undefined);
   isFetchingData = signal<boolean>(false);
 
-  // TODO: Pagination
-  // TODO: Fix menu active window
-  // TODO: Impl notifications
+  // TODO: Create Task
+  // TODO: Update Task
 
   ngOnInit(): void {
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
@@ -33,6 +34,7 @@ export class TaskList implements OnInit {
         console.log('[TaskList.Param] ', param);
         this.fetchTasks(this.currentFilter, this.currentSearchTearm);
       },
+      error: (error) => this.alertService.addAlert('error', error.message),
     });
   }
 
@@ -51,15 +53,15 @@ export class TaskList implements OnInit {
           console.log('[TaskList fetchTasks complete] ...');
           this.isFetchingData.set(false);
         },
-        error: (error) => {
-          console.log('[FetchTasks Error] ', error);
-        },
+        error: (error) => this.alertService.addAlert('error', error.message),
       });
   }
 
   onCompleteTask(id: string) {
     const subscription = this.taskService.removeTask(id).subscribe({
+      next: () => this.alertService.addAlert('success', 'Task completed'),
       complete: () => this.fetchTasks(this.currentFilter, this.currentSearchTearm),
+      error: (error) => this.alertService.addAlert('error', error.message),
     });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());

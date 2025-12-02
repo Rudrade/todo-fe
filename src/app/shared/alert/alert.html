@@ -1,0 +1,10 @@
+<div [class]="alertClass" role="alert">
+  {{ data().message }}
+  <button
+    type="button"
+    class="btn-close"
+    data-bs-dismiss="alert"
+    aria-label="Close"
+    (click)="onCloseAlert()"
+  ></button>
+</div>

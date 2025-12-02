@@ -9,3 +9,9 @@
     </div>
   </div>
 </div>
+
+<div class="alerts">
+  @for (alert of alerts(); track alert.id) {
+  <app-alert [data]="alert" />
+  }
+</div>

@@ -2,40 +2,42 @@
   <h1 class="p-2">{{ filterName }}</h1>
   <h1 class="p-2">{{ taskCount() }}</h1>
 </div>
-<table class="table">
-  <tbody>
-    <tr [routerLink]="'./new'">
-      <td>
-        <i class="bi bi-plus"></i>
-      </td>
-      <td>Add new task</td>
-      <td></td>
-    </tr>
-    @if (isFetchingData()) {
-    <div class="d-flex justify-content-center">
-      <div class="spinner-border" role="status">
-        <span class="visually-hidden">Loading...</span>
+<div class="table-responsive">
+  <table class="table">
+    <tbody>
+      <tr [routerLink]="'./new'">
+        <td>
+          <i class="bi bi-plus"></i>
+        </td>
+        <td>Add new task</td>
+        <td></td>
+      </tr>
+      @if (isFetchingData()) {
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
-    </div>
-    } @else { @for (task of tasks(); track task.id) {
-    <tr>
-      <td>
-        <input type="checkbox" (click)="onCompleteTask(task.id)" />
-      </td>
-      <td>
-        {{ task.title }}
-      </td>
-      <td>
-        <i class="bi bi-chevron-right"></i>
-      </td>
-    </tr>
-    } }
-  </tbody>
-  @if (!isFetchingData() && tasks().length === 0) {
-  <caption>
-    No tasks found
-  </caption>
-  }
-</table>
+      } @else { @for (task of tasks(); track task.id) {
+      <tr>
+        <td>
+          <input type="checkbox" (click)="onCompleteTask(task.id)" />
+        </td>
+        <td>
+          {{ task.title }}
+        </td>
+        <td>
+          <i class="bi bi-chevron-right"></i>
+        </td>
+      </tr>
+      } }
+    </tbody>
+    @if (!isFetchingData() && tasks().length === 0) {
+    <caption>
+      No tasks found
+    </caption>
+    }
+  </table>
+</div>
 
 <router-outlet />
