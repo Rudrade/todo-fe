@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, OnInit, output } from '@angular/core';
+import { Component, effect, inject, input, output } from '@angular/core';
 import { Task } from '../../models/task';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../services/taskService';
@@ -11,7 +11,7 @@ import { AlertService } from '../../services/alert.service';
   templateUrl: './task.html',
   styleUrl: './task.css',
 })
-export class TaskComponent implements OnInit {
+export class TaskComponent {
   private taskService = inject(TaskService);
   private alertService = inject(AlertService);
 
@@ -29,11 +29,17 @@ export class TaskComponent implements OnInit {
     dueDate: new FormControl(this.data()?.dueDate),
   });
 
-  ngOnInit(): void {
+  constructor() {
     effect(() => {
+      console.log('[Data]', this.data());
       if (this.data()?.id) {
         this.currentId = this.data()!.id;
       }
+      this.form.patchValue({
+        title: this.data()?.title,
+        description: this.data()?.description,
+        dueDate: this.data()?.dueDate,
+      });
     });
   }
 

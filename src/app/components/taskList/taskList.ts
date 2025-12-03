@@ -26,8 +26,6 @@ export class TaskList implements OnInit {
   isFetchingData = signal<boolean>(false);
   currentTask = signal<Task | undefined>(undefined);
 
-  // TODO: Update Task
-
   ngOnInit(): void {
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (param) => {
@@ -71,6 +69,11 @@ export class TaskList implements OnInit {
     });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
+
+  onOpenTask(task: Task) {
+    this.currentTask.set(task);
+    console.log('[CurrentTask]', this.currentTask());
   }
 
   onCreateTask() {

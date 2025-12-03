@@ -19,7 +19,7 @@
         </div>
       </div>
       } @else { @for (task of tasks(); track task.id) {
-      <tr>
+      <tr (click)="onOpenTask(task)">
         <td>
           <input type="checkbox" (click)="onCompleteTask(task.id)" />
         </td>
