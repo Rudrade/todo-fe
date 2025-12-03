@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 
 @Component({
@@ -23,5 +23,9 @@ export class Menu {
         },
       });
     }
+  }
+
+  onLogout() {
+    sessionStorage.clear(); // TODO: Impl this correctly
   }
 }

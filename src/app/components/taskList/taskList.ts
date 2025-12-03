@@ -1,14 +1,16 @@
 import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { TaskService } from '../../services/taskService';
-import { ActivatedRoute, RouterOutlet, RouterLinkWithHref } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../services/alert.service';
+import { Task } from '../../models/task';
+import { TaskComponent } from '../task/task';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './taskList.html',
   styleUrls: ['./taskList.css'],
-  imports: [RouterOutlet, RouterLinkWithHref],
+  imports: [TaskComponent],
 })
 export class TaskList implements OnInit {
   private taskService = inject(TaskService);
@@ -22,8 +24,8 @@ export class TaskList implements OnInit {
   tasks = this.taskService.tasks;
   taskCount = signal<Number | undefined>(undefined);
   isFetchingData = signal<boolean>(false);
+  currentTask = signal<Task | undefined>(undefined);
 
-  // TODO: Create Task
   // TODO: Update Task
 
   ngOnInit(): void {
@@ -36,6 +38,10 @@ export class TaskList implements OnInit {
       },
       error: (error) => this.alertService.addAlert('error', error.message),
     });
+  }
+
+  refreshTasks() {
+    this.fetchTasks(this.currentFilter, this.currentSearchTearm);
   }
 
   private fetchTasks(filter: string, searchTearm: string | undefined) {
@@ -65,6 +71,20 @@ export class TaskList implements OnInit {
     });
 
     this.destroyRef.onDestroy(() => subscription.unsubscribe());
+  }
+
+  onCreateTask() {
+    this.currentTask.set({
+      id: '',
+      title: '',
+      description: undefined,
+      dueDate: undefined,
+      completed: false,
+    });
+  }
+
+  onCloseTask() {
+    this.currentTask.set(undefined);
   }
 
   get filterName() {

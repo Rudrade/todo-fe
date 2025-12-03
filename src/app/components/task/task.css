@@ -1,0 +1,26 @@
+.sidebar-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sidebar {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 40%;
+  padding: 2em 1em;
+}
+
+.ng-invalid.ng-dirty {
+  border-color: red;
+}
+
+small {
+  color: red;
+}

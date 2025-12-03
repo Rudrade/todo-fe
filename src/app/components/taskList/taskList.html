@@ -5,7 +5,7 @@
 <div class="table-responsive">
   <table class="table">
     <tbody>
-      <tr [routerLink]="'./new'">
+      <tr (click)="onCreateTask()">
         <td>
           <i class="bi bi-plus"></i>
         </td>
@@ -40,4 +40,6 @@
   </table>
 </div>
 
-<router-outlet />
+@if (currentTask()) {
+<app-task [data]="currentTask()" (close)="onCloseTask()" (refreshTasks)="refreshTasks()" />
+}

@@ -32,4 +32,8 @@ export class TaskService {
   removeTask(id: string) {
     return this.httpClient.delete('http://localhost:8080/todo/api/task/remove/' + id);
   }
+
+  saveTask(task: Task): Observable<Task> {
+    return this.httpClient.post<Task>('http://localhost:8080/todo/api/task/save', task);
+  }
 }
