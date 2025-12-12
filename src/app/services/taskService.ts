@@ -3,12 +3,14 @@ import { Task } from '../models/task';
 import { inject, Injectable, signal } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TaskListResponse } from '../models/taskListResponse';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TaskService {
   private httpClient = inject(HttpClient);
+  private baseUrl = environment.apiUrl + 'task';
   tasks = signal<Task[]>([]);
 
   fetchTasks(
@@ -24,16 +26,16 @@ export class TaskService {
       }
     }
 
-    return this.httpClient.get<TaskListResponse>('http://localhost:8080/todo/api/task', {
+    return this.httpClient.get<TaskListResponse>(this.baseUrl, {
       params,
     });
   }
 
   removeTask(id: string) {
-    return this.httpClient.delete('http://localhost:8080/todo/api/task/remove/' + id);
+    return this.httpClient.delete(this.baseUrl + '/remove/' + id);
   }
 
   saveTask(task: Task): Observable<Task> {
-    return this.httpClient.post<Task>('http://localhost:8080/todo/api/task/save', task);
+    return this.httpClient.post<Task>(this.baseUrl + '/save', task);
   }
 }
