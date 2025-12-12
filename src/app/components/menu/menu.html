@@ -1,0 +1,80 @@
+<nav class="navbar navbar-nav navbar-expand-lg">
+  <!--Header and Search -->
+  <div class="row align-self-start">
+    <h3 class="navbar-text">Menu</h3>
+    <form class="d-flex">
+      <input class="form-control" type="search" placeholder="Search" #searchInput />
+      <button class="btn btn-secondary" (click)="onSearchTasks(searchInput.value)" type="button">
+        <i class="bi bi-search"></i>
+      </button>
+    </form>
+  </div>
+
+  <!-- Main Menu -->
+  <div class="row align-self-start my-3">
+    <h6 class="navbar-text">Tasks</h6>
+    <div class="container ms-4">
+      <ul>
+        <li class="d-flex flex-row">
+          <a
+            class="icon-link icon-link-hover"
+            [routerLink]="['/tasks']"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i class="bi bi-clipboard me-3 align-middle"></i>
+            All
+          </a>
+        </li>
+        <li class="d-flex flex-row align-items-center">
+          <a
+            class="icon-link icon-link-hover"
+            [routerLink]="'/tasks'"
+            [queryParams]="{ filter: 'today' }"
+            [routerLinkActive]="'active'"
+          >
+            <i class="bi bi-list-task me-3"></i>
+            Today
+          </a>
+        </li>
+        <li class="d-flex flex-row align-items-center">
+          <a
+            class="icon-link icon-link-hover"
+            [routerLink]="'/tasks'"
+            [queryParams]="{ filter: 'upcoming' }"
+            [routerLinkActive]="'active'"
+          >
+            <i class="bi bi-chevron-double-right me-3"></i>
+            Upcoming
+          </a>
+        </li>
+        <li class="d-flex flex-row align-items-center">
+          <a class="icon-link icon-link-hover">
+            <i class="bi bi-calendar3 me-3"></i>
+            Calendar
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Extra options -->
+  <div class="row align-self-start my-3">
+    <div class="container ms-4">
+      <ul>
+        <li class="d-flex flex-row">
+          <a href="#" class="icon-link icon-link-hover">
+            <i class="bi bi-gear me-3 align-middle"></i>
+            Settings
+          </a>
+        </li>
+        <li class="d-flex flex-row">
+          <a class="icon-link icon-link-hover" (click)="onLogout()">
+            <i class="bi bi-box-arrow-right me-3 align-middle"></i>
+            Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

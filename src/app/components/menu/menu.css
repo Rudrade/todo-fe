@@ -1,0 +1,21 @@
+li {
+  --bs-icon-link-transform: translate3d(0, -0.125rem, 0);
+}
+
+li:hover {
+  background-color: lightgray;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+li > .active {
+  background-color: lightgray;
+  border-radius: 5px;
+  font-weight: bold;
+  width: 100%;
+}
+
+li a {
+  text-decoration: none;
+  color: inherit;
+}
