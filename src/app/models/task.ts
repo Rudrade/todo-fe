@@ -4,4 +4,5 @@ export interface Task {
   description: string | undefined | null;
   dueDate: Date | undefined | null;
   completed: boolean;
+  listName: string | undefined | null;
 }

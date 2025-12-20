@@ -83,6 +83,7 @@ export class TaskList implements OnInit {
       description: undefined,
       dueDate: undefined,
       completed: false,
+      listName: undefined,
     });
   }
 
