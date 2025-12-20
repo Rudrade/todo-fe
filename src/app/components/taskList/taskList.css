@@ -1,3 +1,9 @@
 .table-responsive {
   max-height: 400px;
 }
+
+.table tbody tr:hover,
+.table tbody tr:hover td {
+  background-color: lightgray;
+  cursor: pointer;
+}

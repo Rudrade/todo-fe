@@ -4,7 +4,11 @@
     <h3 class="navbar-text">Menu</h3>
     <form class="d-flex">
       <input class="form-control" type="search" placeholder="Search" #searchInput />
-      <button class="btn btn-secondary" (click)="onSearchTasks(searchInput.value)" type="button">
+      <button
+        class="btn btn-secondary"
+        (click)="onSearchTasks(searchInput.value, 'search')"
+        type="button"
+      >
         <i class="bi bi-search"></i>
       </button>
     </form>
@@ -54,6 +58,27 @@
             Calendar
           </a>
         </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Lists -->
+  <div class="row align-self-start my-3">
+    <h6 class="navbar-text">Lists</h6>
+    <div class="container ms-4">
+      <ul>
+        @for (list of userLists(); track list) {
+        <li
+          class="d-flex flex-row align-items-center justify-content-between"
+          (click)="onSearchTasks(list.name, 'list')"
+        >
+          <a class="icon-link icon-link-hover d-flex align-items-center gap-2">
+            <span class="list-square" [style]="listColor(list.color)"></span>
+            {{ list.name }}
+          </a>
+          <span class="count-badge">{{ list.count }}</span>
+        </li>
+        }
       </ul>
     </div>
   </div>

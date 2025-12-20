@@ -5,6 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../services/alert.service';
 import { Task } from '../../models/task';
 import { TaskComponent } from '../task/task';
+import { UserListService } from '../../services/userListService';
 
 @Component({
   selector: 'app-task-list',
@@ -17,9 +18,10 @@ export class TaskList implements OnInit {
   private destroyRef = inject(DestroyRef);
   private route = inject(ActivatedRoute);
   private alertService = inject(AlertService);
+  private userListService = inject(UserListService);
 
   private currentFilter = '';
-  private currentSearchTearm = '';
+  private currentSearchTerm = '';
 
   tasks = this.taskService.tasks;
   taskCount = signal<Number | undefined>(undefined);
@@ -30,16 +32,16 @@ export class TaskList implements OnInit {
     this.route.queryParams.pipe(takeUntilDestroyed(this.destroyRef)).subscribe({
       next: (param) => {
         this.currentFilter = param['filter'];
-        this.currentSearchTearm = param['searchTerm'];
+        this.currentSearchTerm = param['searchTerm'];
         console.log('[TaskList.Param] ', param);
-        this.fetchTasks(this.currentFilter, this.currentSearchTearm);
+        this.fetchTasks(this.currentFilter, this.currentSearchTerm);
       },
       error: (error) => this.alertService.addAlert('error', error.message),
     });
   }
 
   refreshTasks() {
-    this.fetchTasks(this.currentFilter, this.currentSearchTearm);
+    this.fetchTasks(this.currentFilter, this.currentSearchTerm);
   }
 
   private fetchTasks(filter: string, searchTearm: string | undefined) {
@@ -56,6 +58,7 @@ export class TaskList implements OnInit {
         complete: () => {
           console.log('[TaskList fetchTasks complete] ...');
           this.isFetchingData.set(false);
+          this.userListService.fetchUserLists();
         },
         error: (error) => this.alertService.addAlert('error', error.message),
       });
@@ -64,7 +67,7 @@ export class TaskList implements OnInit {
   onCompleteTask(id: string) {
     const subscription = this.taskService.removeTask(id).subscribe({
       next: () => this.alertService.addAlert('success', 'Task completed'),
-      complete: () => this.fetchTasks(this.currentFilter, this.currentSearchTearm),
+      complete: () => this.fetchTasks(this.currentFilter, this.currentSearchTerm),
       error: (error) => this.alertService.addAlert('error', error.message),
     });
 
@@ -98,8 +101,14 @@ export class TaskList implements OnInit {
       return 'Today';
     } else if (this.currentFilter === 'search') {
       return 'Search';
+    } else if (this.currentFilter === 'list') {
+      return this.currentSearchTerm;
     } else {
       return 'All';
     }
+  }
+
+  listColor(listName: string) {
+    return this.userListService.listColorByName(listName);
   }
 }

@@ -23,6 +23,7 @@ export class TaskComponent {
   data = input<Task | undefined>();
 
   private currentId = '';
+  private createdOption = false;
 
   listOptions = this.userListService.userLists;
   searchInput = new FormControl('');
@@ -40,15 +41,6 @@ export class TaskComponent {
   });
 
   constructor() {
-    this.userListService
-      .fetchUserLists()
-      .pipe(take(1))
-      .subscribe({
-        next: (resp) => {
-          this.userListService.updateUserList(resp);
-        },
-      });
-
     effect(() => {
       console.log('[Data]', this.data());
       if (this.data()?.id) {
@@ -70,9 +62,9 @@ export class TaskComponent {
 
   filterOptions(searchTerm: string) {
     const lowercaseTerm = searchTerm.toLowerCase();
-    this.filteredOptions = this.listOptions().filter((option) =>
-      option.toLowerCase().includes(lowercaseTerm)
-    );
+    this.filteredOptions = this.listOptions()
+      .map((opt) => opt.name)
+      .filter((option) => option.toLowerCase().includes(lowercaseTerm));
     this.showDropdown = true;
   }
 
@@ -97,16 +89,26 @@ export class TaskComponent {
   hasCreateOption(): boolean {
     const searchTerm = this.searchInput.value?.trim().toLowerCase();
     return (
-      !!searchTerm && !this.listOptions().some((option) => option.toLowerCase() === searchTerm)
+      !!searchTerm && !this.listOptions().some((option) => option.name.toLowerCase() === searchTerm)
     );
   }
 
   createOption() {
     const newOption = this.searchInput.value?.trim();
-    if (newOption && !this.listOptions().includes(newOption)) {
+    if (
+      newOption &&
+      !this.listOptions()
+        .map((opt) => opt.name)
+        .includes(newOption)
+    ) {
       this.selectOption(newOption);
+      this.createdOption = true;
     }
     this.showDropdown = false;
+  }
+
+  listColor(name: string) {
+    return this.userListService.listColorByName(name);
   }
 
   onClose() {
@@ -140,6 +142,9 @@ export class TaskComponent {
             }
             this.alertService.addAlert('success', 'Task created with success');
             this.refreshTasks.emit();
+            if (this.createdOption) {
+              this.userListService.fetchUserLists();
+            }
           },
           error: (error) => {
             this.alertService.addAlert('error', error?.error);

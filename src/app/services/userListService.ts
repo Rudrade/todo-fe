@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
+import { UserList } from '../models/userList.model';
+import { take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,14 +10,40 @@ import { environment } from '../../environments/environment';
 export class UserListService {
   private httpClient = inject(HttpClient);
 
-  private lists = signal<string[]>([]);
+  private lists = signal<UserList[]>([]);
   userLists = this.lists.asReadonly();
 
-  fetchUserLists() {
-    return this.httpClient.get<string[]>(environment.apiUrl + 'task/lists');
+  constructor() {
+    this.fetchUserLists();
   }
 
-  updateUserList(lst: string[]) {
-    this.lists.set(lst);
+  fetchUserLists() {
+    this.httpClient
+      .get<UserListResponse>(environment.apiUrl + 'task/lists')
+      .pipe(take(1))
+      .subscribe({
+        next: (resp) => this.lists.set(resp.lists),
+        complete: () => console.log('List fetched: ', this.lists()),
+      });
   }
+
+  getListByName(name: string) {
+    return this.userLists().find((lst) => lst.name === name);
+  }
+
+  listColor(color: string) {
+    if (!color || color === '') {
+      color = '#000';
+    }
+    return `background-color: ${color}; border-color: ${color};`;
+  }
+
+  listColorByName(listName: string) {
+    const list = this.getListByName(listName);
+    return this.listColor(list?.color || '');
+  }
+}
+
+interface UserListResponse {
+  lists: UserList[];
 }
