@@ -4,6 +4,7 @@ import { Menu } from './components/menu/menu';
 import { RouterOutlet } from '@angular/router';
 import { AlertComponent } from './shared/alert/alert';
 import { AlertService } from './services/alert.service';
+import { take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
@@ -13,21 +14,19 @@ import { AlertService } from './services/alert.service';
 })
 export class App implements OnInit {
   private authService = inject(AuthService);
-  private destroyRef = inject(DestroyRef);
   private alertService = inject(AlertService);
 
   alerts = this.alertService.allAlerts;
 
   ngOnInit() {
-    const subscription = this.authService.getAuthToken('rui').subscribe({
-      next: (authToken) => sessionStorage.setItem('sessionData', authToken),
-      error: (error) => {
-        this.alertService.addAlert('error', error.message);
-      },
-    });
-
-    this.destroyRef.onDestroy(() => {
-      subscription.unsubscribe();
-    });
+    this.authService
+      .getAuthToken('rui')
+      .pipe(take(1))
+      .subscribe({
+        next: (authToken) => sessionStorage.setItem('sessionData', authToken),
+        error: (error) => {
+          this.alertService.addAlert('error', error.message);
+        },
+      });
   }
 }

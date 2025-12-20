@@ -24,7 +24,13 @@
           <input type="checkbox" (click)="onCompleteTask(task.id)" />
         </td>
         <td>
-          {{ task.title }}
+          <div>{{ task.title }}</div>
+          @if (task.listName) {
+          <small class="text-muted">
+            <span class="list-square" [style]="listColor(task.listName)"></span>
+            {{ task.listName }}
+          </small>
+          }
         </td>
         <td>
           <i class="bi bi-chevron-right"></i>
