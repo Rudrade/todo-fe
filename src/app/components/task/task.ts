@@ -95,15 +95,16 @@ export class TaskComponent {
 
   createOption() {
     const newOption = this.searchInput.value?.trim();
+    console.log('Create Option: ', newOption);
     if (
       newOption &&
       !this.listOptions()
         .map((opt) => opt.name)
         .includes(newOption)
     ) {
-      this.selectOption(newOption);
       this.createdOption = true;
     }
+    this.selectOption(newOption || '');
     this.showDropdown = false;
   }
 
