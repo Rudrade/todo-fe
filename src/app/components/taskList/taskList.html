@@ -25,10 +25,19 @@
         </td>
         <td>
           <div>{{ task.title }}</div>
-          @if (task.listName) {
+          @if (task.listName || task.dueDate) {
           <small class="text-muted">
-            <span class="list-square" [style]="listColor(task.listName)"></span>
-            {{ task.listName }}
+            @if (task.dueDate) {
+            <span class="pe-3">
+              <i class="bi bi-calendar-x"></i>
+              {{ task.dueDate }}
+            </span>
+            } @if (task.listName) {
+            <span>
+              <span class="list-square" [style]="listColor(task.listName)"></span>
+              {{ task.listName }}
+            </span>
+            }
           </small>
           }
         </td>
