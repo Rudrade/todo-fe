@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { UserListService } from '../../services/userListService';
+import { UserListService } from '../../services/userService';
 
 @Component({
   selector: 'app-menu',
@@ -8,7 +8,7 @@ import { UserListService } from '../../services/userListService';
   styleUrls: ['./menu.css'],
   imports: [RouterLink, RouterLinkActive],
 })
-export class Menu {
+export class MenuComponent {
   private router = inject(Router);
   private userListService = inject(UserListService);
 

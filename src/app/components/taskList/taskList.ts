@@ -2,10 +2,10 @@ import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
 import { TaskService } from '../../services/taskService';
 import { ActivatedRoute } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { AlertService } from '../../services/alert.service';
+import { AlertService } from '../../services/alertService';
 import { Task } from '../../models/task';
 import { TaskComponent } from '../task/task';
-import { UserListService } from '../../services/userListService';
+import { UserListService } from '../../services/userService';
 
 @Component({
   selector: 'app-task-list',
@@ -13,7 +13,7 @@ import { UserListService } from '../../services/userListService';
   styleUrls: ['./taskList.css'],
   imports: [TaskComponent],
 })
-export class TaskList implements OnInit {
+export class TaskListComponent implements OnInit {
   private taskService = inject(TaskService);
   private destroyRef = inject(DestroyRef);
   private route = inject(ActivatedRoute);
@@ -87,6 +87,7 @@ export class TaskList implements OnInit {
       dueDate: undefined,
       completed: false,
       listName: undefined,
+      tags: [],
     });
   }
 

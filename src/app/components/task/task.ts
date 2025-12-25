@@ -1,15 +1,19 @@
-import { Component, effect, inject, input, output } from '@angular/core';
+import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Task } from '../../models/task';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { TaskService } from '../../services/taskService';
 import { take } from 'rxjs';
-import { AlertService } from '../../services/alert.service';
-import { UserListService } from '../../services/userListService';
+import { AlertService } from '../../services/alertService';
+import { UserListService } from '../../services/userService';
+import { TagsService } from '../../services/tagsService';
+import { TagComponent } from '../tag/tag';
+import { SearchSelectComponent } from '../../shared/search-select/search-select';
+import { Tag } from '../../models/tag';
 
 @Component({
   selector: 'app-task',
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, TagComponent, SearchSelectComponent],
   templateUrl: './task.html',
   styleUrl: './task.css',
 })
@@ -17,6 +21,7 @@ export class TaskComponent {
   private taskService = inject(TaskService);
   private alertService = inject(AlertService);
   private userListService = inject(UserListService);
+  private tagService = inject(TagsService);
 
   close = output<void>();
   refreshTasks = output<void>();
@@ -24,12 +29,20 @@ export class TaskComponent {
 
   private currentId = '';
   private createdOption = false;
+  private createdTag = false;
 
   listOptions = this.userListService.userLists;
-  searchInput = new FormControl('');
-  filteredOptions: string[] = [];
-  showDropdown = false;
-  selectedOption = '';
+  selectedList = '';
+
+  selectedTags = signal<Tag[]>([]);
+  selectedOptions = computed(() => {
+    return this.selectedTags().map((tag) => tag.name);
+  });
+  userTags = computed(() => {
+    return this.tagService
+      .userTags()
+      .filter((tag) => !this.selectedTags().find((t) => t.name === tag.name));
+  });
 
   form = new FormGroup({
     title: new FormControl(this.data()?.title, {
@@ -37,7 +50,6 @@ export class TaskComponent {
     }),
     description: new FormControl(this.data()?.description),
     dueDate: new FormControl(this.data()?.dueDate),
-    list: new FormControl(''),
   });
 
   constructor() {
@@ -52,50 +64,25 @@ export class TaskComponent {
         description: this.data()?.description,
         dueDate: this.data()?.dueDate,
       });
-      this.selectOption(this.data()?.listName || '');
+      this.selectList(this.data()?.listName || '');
+
+      const tagArr: Tag[] = [];
+      this.data()?.tags?.forEach((tag) => tagArr.push(tag));
+      this.selectedTags.set(tagArr);
     });
-
-    this.searchInput.valueChanges.subscribe((value) => {
-      this.filterOptions(value || '');
-    });
   }
 
-  filterOptions(searchTerm: string) {
-    const lowercaseTerm = searchTerm.toLowerCase();
-    this.filteredOptions = this.listOptions()
-      .map((opt) => opt.name)
-      .filter((option) => option.toLowerCase().includes(lowercaseTerm));
-    this.showDropdown = true;
+  get userListOptions() {
+    return this.listOptions().map((opt) => opt.name);
   }
 
-  selectOption(option: string) {
-    console.log('Selected option', option);
-    this.selectedOption = option;
-    this.searchInput.setValue(option, { emitEvent: false });
-    this.form.patchValue({ list: option });
-    this.showDropdown = false;
+  selectList(list: string) {
+    this.selectedList = list;
+    console.log('List selected in taskComponent: ', list);
   }
 
-  onSearchInputFocus() {
-    this.showDropdown = true;
-    this.filterOptions(this.searchInput.value || '');
-  }
-
-  get createOptionText(): string {
-    const searchTerm = this.searchInput.value?.trim();
-    return searchTerm ? `Create "${searchTerm}"` : '';
-  }
-
-  hasCreateOption(): boolean {
-    const searchTerm = this.searchInput.value?.trim().toLowerCase();
-    return (
-      !!searchTerm && !this.listOptions().some((option) => option.name.toLowerCase() === searchTerm)
-    );
-  }
-
-  createOption() {
-    const newOption = this.searchInput.value?.trim();
-    console.log('Create Option: ', newOption);
+  createList(name: string | null) {
+    const newOption = name?.trim();
     if (
       newOption &&
       !this.listOptions()
@@ -104,12 +91,36 @@ export class TaskComponent {
     ) {
       this.createdOption = true;
     }
-    this.selectOption(newOption || '');
-    this.showDropdown = false;
+    this.selectList(newOption || '');
   }
 
-  listColor(name: string) {
-    return this.userListService.listColorByName(name);
+  selectTag(name: string) {
+    const tag = this.userTags().find((tag) => tag.name === name);
+    if (tag) {
+      this.selectedTags.update((arr) => [...arr, tag]);
+    }
+  }
+
+  createTag(name: string | null) {
+    const newTag = name?.trim();
+    if (newTag && !this.userTagOptions.includes(newTag)) {
+      this.selectedTags.update((arr) => [
+        ...arr,
+        {
+          color: '',
+          name: newTag,
+        },
+      ]);
+      this.createdOption = true;
+    }
+  }
+
+  removeTag(name: string) {
+    this.selectedTags.set(this.selectedTags().filter((tag) => tag.name !== name));
+  }
+
+  get userTagOptions() {
+    return this.userTags().map((tag) => tag.name);
   }
 
   onClose() {
@@ -124,8 +135,6 @@ export class TaskComponent {
     if (this.form.valid) {
       const title = this.title?.value ? this.title.value : '';
 
-      console.log('selectedOption', this.selectedOption);
-
       this.taskService
         .saveTask({
           id: this.currentId,
@@ -133,7 +142,8 @@ export class TaskComponent {
           description: this.description?.value,
           dueDate: this.dueDate?.value,
           completed: false,
-          listName: this.selectedOption,
+          listName: this.selectedList,
+          tags: this.selectedTags(),
         })
         .pipe(take(1))
         .subscribe({
@@ -146,9 +156,13 @@ export class TaskComponent {
             if (this.createdOption) {
               this.userListService.fetchUserLists();
             }
+            if (this.createdTag) {
+              this.tagService.fetchTags();
+            }
           },
           error: (error) => {
-            this.alertService.addAlert('error', error?.error);
+            const errMsg = error?.message ? error?.message : error?.error;
+            this.alertService.addAlert('error', errMsg);
           },
         });
     }

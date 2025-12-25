@@ -31,54 +31,33 @@
       </div>
 
       <div class="form-floating mb-3">
-        <div class="position-relative">
-          <input
-            type="text"
-            class="form-control"
-            id="task-list"
-            placeholder="Search or create list"
-            [formControl]="searchInput"
-            (focus)="onSearchInputFocus()"
-            (blur)="createOption()"
-            autocomplete="off"
+        <div>
+          <label>List</label>
+          <app-search-select
+            [options]="userListOptions"
+            [selected]="selectedList"
+            [hasColor]="true"
+            (selectOption)="selectList($event)"
+            (createOption)="createList($event)"
           />
-          @if (showDropdown && (filteredOptions.length > 0 )) {
-          <ul
-            class="list-group position-absolute w-100"
-            style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto"
-          >
-            @for (option of filteredOptions; track option) {
-            <li
-              class="list-group-item list-group-item-action cursor-pointer"
-              (mousedown)="selectOption(option)"
-            >
-              <span class="list-square" [style]="listColor(option)"></span>
-              {{ option }}
-            </li>
-            } @if (hasCreateOption()) {
-            <li
-              class="list-group-item list-group-item-action cursor-pointer"
-              style="font-weight: 600; background-color: #f0f0f0"
-              (click)="createOption()"
-            >
-              + {{ createOptionText }}
-            </li>
+        </div>
+      </div>
+
+      <div class="form-floating mb-3">
+        <div>
+          <label>Tags</label>
+          <div>
+            @for (tag of selectedTags(); track $index) {
+            <app-tag [data]="tag" [removable]="true" (remove)="removeTag($event)" />
             }
-          </ul>
-          } @if (filteredOptions.length == 0 && hasCreateOption() && showDropdown) {
-          <ul
-            class="list-group position-absolute w-100"
-            style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto"
-          >
-            <li
-              class="list-group-item list-group-item-action cursor-pointer"
-              style="font-weight: 600; background-color: #f0f0f0"
-              (click)="createOption()"
-            >
-              + {{ createOptionText }}
-            </li>
-          </ul>
-          }
+          </div>
+          <app-search-select
+            [options]="userTagOptions"
+            [multiple]="true"
+            [selected]="selectedOptions()"
+            (selectOption)="selectTag($event)"
+            (createOption)="createTag($event)"
+          />
         </div>
       </div>
 

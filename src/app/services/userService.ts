@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { UserList } from '../models/userList.model';
+import { UserList } from '../models/userList';
 import { take } from 'rxjs';
 
 @Injectable({

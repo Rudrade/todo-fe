@@ -1,0 +1,6 @@
+<span class="tag" [style]="styles">
+  {{ data().name }}
+  @if (removable()) {
+  <button type="button" class="btn-close" aria-label="Close" (click)="onRemove()"></button>
+  }
+</span>
