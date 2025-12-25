@@ -1,3 +1,5 @@
+import { Tag } from './tag';
+
 export interface Task {
   id: string;
   title: string;
@@ -5,4 +7,5 @@ export interface Task {
   dueDate: Date | undefined | null;
   completed: boolean;
   listName: string | undefined | null;
+  tags: Tag[];
 }

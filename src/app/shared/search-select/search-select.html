@@ -1,0 +1,50 @@
+<div style="position: relative">
+  <input
+    type="text"
+    class="form-control"
+    placeholder="Search or create list"
+    [formControl]="searchInput"
+    (focus)="onSearchInputFocus()"
+    (blur)="onCreateOption()"
+    autocomplete="off"
+  />
+  @if (showDropdown && (filteredOptions().length > 0 )) {
+  <ul
+    class="list-group position-absolute w-100"
+    style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto"
+  >
+    @for (option of filteredOptions(); track option) {
+    <li
+      class="list-group-item list-group-item-action cursor-pointer"
+      (mousedown)="onSelectOption(option)"
+    >
+      @if (hasColor()) {
+      <span class="list-square" [style]="listColor(option)"></span>
+      }
+      {{ option }}
+    </li>
+    } @if (hasCreateOption()) {
+    <li
+      class="list-group-item list-group-item-action cursor-pointer"
+      style="font-weight: 600; background-color: #f0f0f0"
+      (click)="onCreateOption()"
+    >
+      + {{ createOptionText }}
+    </li>
+    }
+  </ul>
+  } @if (filteredOptions().length == 0 && hasCreateOption() && showDropdown) {
+  <ul
+    class="list-group position-absolute w-100"
+    style="top: 100%; z-index: 1000; max-height: 200px; overflow-y: auto"
+  >
+    <li
+      class="list-group-item list-group-item-action cursor-pointer"
+      style="font-weight: 600; background-color: #f0f0f0"
+      (click)="onCreateOption()"
+    >
+      + {{ createOptionText }}
+    </li>
+  </ul>
+  }
+</div>

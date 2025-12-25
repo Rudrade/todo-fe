@@ -1,16 +1,16 @@
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { AuthService } from './services/authService';
-import { Menu } from './components/menu/menu';
+import { MenuComponent } from './components/menu/menu';
 import { RouterOutlet } from '@angular/router';
 import { AlertComponent } from './shared/alert/alert';
-import { AlertService } from './services/alert.service';
+import { AlertService } from './services/alertService';
 import { take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
-  imports: [Menu, RouterOutlet, AlertComponent],
+  imports: [MenuComponent, RouterOutlet, AlertComponent],
 })
 export class App implements OnInit {
   private authService = inject(AuthService);

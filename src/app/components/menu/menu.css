@@ -20,6 +20,12 @@ li a {
   color: inherit;
 }
 
+.tag-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
 .count-badge {
   width: 24px;
   height: 24px;

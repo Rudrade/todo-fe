@@ -1,0 +1,32 @@
+.tag {
+  position: relative;
+  display: inline-block;
+  padding: 8px 22px 8px 10px;
+  font-size: 0.85rem;
+  line-height: 1.2;
+  border-radius: 5px;
+  background-color: #e7f6f4;
+  border: 1px solid transparent;
+  color: #274248;
+  white-space: nowrap;
+  margin: 2px 6px 2px 0;
+  user-select: none;
+}
+
+.tag:hover {
+  filter: brightness(0.98);
+}
+
+.tag .tag-close {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0.05rem;
+  opacity: 0.3;
+}
+
+.tag .tag-close:hover {
+  opacity: 1;
+}

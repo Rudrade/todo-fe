@@ -4,7 +4,8 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
-RUN npm run build
+ARG ENV=development
+RUN npm run build -- --configuration ${ENV}
 
 # Configure nginx to run app
 FROM nginx:latest

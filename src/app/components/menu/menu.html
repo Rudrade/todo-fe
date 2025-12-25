@@ -78,8 +78,24 @@
           </a>
           <span class="count-badge">{{ list.count }}</span>
         </li>
+        } @if (userLists().length === 0){
+        <small>No lists found</small>
         }
       </ul>
+    </div>
+  </div>
+
+  <!-- Tags -->
+  <div class="row align-self-start my-3">
+    <h6 class="navbar-text">Tags</h6>
+    <div class="container ms-4">
+      <div class="tag-row">
+        @for (tag of userTags(); track tag.name) {
+        <app-tag [data]="tag" [removable]="false" (click)="onSearchTasks(tag.name, 'tag')" />
+        } @if (userTags().length === 0){
+        <small>No tags found</small>
+        }
+      </div>
     </div>
   </div>
 

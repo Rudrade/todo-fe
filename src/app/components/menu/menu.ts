@@ -1,18 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
-import { UserListService } from '../../services/userListService';
+import { UserListService } from '../../services/userService';
+import { TagsService } from '../../services/tagsService';
+import { TagComponent } from '../tag/tag';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.html',
   styleUrls: ['./menu.css'],
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, TagComponent],
 })
-export class Menu {
+export class MenuComponent {
   private router = inject(Router);
   private userListService = inject(UserListService);
+  private tagsService = inject(TagsService);
 
   userLists = this.userListService.userLists;
+  userTags = this.tagsService.userTags;
 
   onSearchTasks(searchTerm: string, type: string) {
     console.log('[SearchTerm] ', searchTerm);
@@ -23,6 +27,13 @@ export class Menu {
       this.router.navigate(['tasks'], {
         queryParams: {
           filter: 'list',
+          searchTerm,
+        },
+      });
+    } else if (type === 'tag') {
+      this.router.navigate(['tasks'], {
+        queryParams: {
+          filter: 'tag',
           searchTerm,
         },
       });
