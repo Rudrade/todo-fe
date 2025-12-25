@@ -28,8 +28,6 @@ export class TaskComponent {
   data = input<Task | undefined>();
 
   private currentId = '';
-  private createdOption = false;
-  private createdTag = false;
 
   listOptions = this.userListService.userLists;
   selectedList = '';
@@ -38,21 +36,18 @@ export class TaskComponent {
   selectedOptions = computed(() => {
     return this.selectedTags().map((tag) => tag.name);
   });
-  userTags = computed(() => {
-    return this.tagService
-      .userTags()
-      .filter((tag) => !this.selectedTags().find((t) => t.name === tag.name));
-  });
-
-  form = new FormGroup({
-    title: new FormControl(this.data()?.title, {
-      validators: [Validators.required],
-    }),
-    description: new FormControl(this.data()?.description),
-    dueDate: new FormControl(this.data()?.dueDate),
-  });
-
   constructor() {
+    effect(() => {
+      const current = this.selectedTags();
+      const updated = current.map(
+        (tag) => this.tagService.userTags().find((t) => t.name === tag.name) ?? tag
+      );
+      const changed = updated.some((tag, idx) => tag !== current[idx]);
+      if (changed) {
+        this.selectedTags.set(updated);
+      }
+    });
+
     effect(() => {
       console.log('[Data]', this.data());
       if (this.data()?.id) {
@@ -71,6 +66,19 @@ export class TaskComponent {
       this.selectedTags.set(tagArr);
     });
   }
+  userTags = computed(() => {
+    return this.tagService
+      .userTags()
+      .filter((tag) => !this.selectedTags().find((t) => t.name === tag.name));
+  });
+
+  form = new FormGroup({
+    title: new FormControl(this.data()?.title, {
+      validators: [Validators.required],
+    }),
+    description: new FormControl(this.data()?.description),
+    dueDate: new FormControl(this.data()?.dueDate),
+  });
 
   get userListOptions() {
     return this.listOptions().map((opt) => opt.name);
@@ -83,14 +91,6 @@ export class TaskComponent {
 
   createList(name: string | null) {
     const newOption = name?.trim();
-    if (
-      newOption &&
-      !this.listOptions()
-        .map((opt) => opt.name)
-        .includes(newOption)
-    ) {
-      this.createdOption = true;
-    }
     this.selectList(newOption || '');
   }
 
@@ -111,7 +111,6 @@ export class TaskComponent {
           name: newTag,
         },
       ]);
-      this.createdOption = true;
     }
   }
 
@@ -153,12 +152,6 @@ export class TaskComponent {
             }
             this.alertService.addAlert('success', 'Task created with success');
             this.refreshTasks.emit();
-            if (this.createdOption) {
-              this.userListService.fetchUserLists();
-            }
-            if (this.createdTag) {
-              this.tagService.fetchTags();
-            }
           },
           error: (error) => {
             const errMsg = error?.message ? error?.message : error?.error;

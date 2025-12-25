@@ -6,6 +6,7 @@ import { AlertService } from '../../services/alertService';
 import { Task } from '../../models/task';
 import { TaskComponent } from '../task/task';
 import { UserListService } from '../../services/userService';
+import { TagsService } from '../../services/tagsService';
 
 @Component({
   selector: 'app-task-list',
@@ -19,6 +20,7 @@ export class TaskListComponent implements OnInit {
   private route = inject(ActivatedRoute);
   private alertService = inject(AlertService);
   private userListService = inject(UserListService);
+  private tagService = inject(TagsService);
 
   private currentFilter = '';
   private currentSearchTerm = '';
@@ -59,6 +61,7 @@ export class TaskListComponent implements OnInit {
           console.log('[TaskList fetchTasks complete] ...');
           this.isFetchingData.set(false);
           this.userListService.fetchUserLists();
+          this.tagService.fetchTags();
         },
         error: (error) => this.alertService.addAlert('error', error.message),
       });
