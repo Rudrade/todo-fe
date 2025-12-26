@@ -1,0 +1,60 @@
+<div class="calendar">
+  <div class="calendar-header">
+    <div class="month-title">{{ monthLabel() }}</div>
+    <div class="actions">
+      <button class="btn btn-sm btn-outline-secondary" type="button" (click)="changeMonth(-1)">
+        <i class="bi bi-chevron-left"></i>
+      </button>
+      <button class="btn btn-sm btn-outline-secondary" type="button" (click)="goToToday()">
+        Today
+      </button>
+      <button class="btn btn-sm btn-outline-secondary" type="button" (click)="changeMonth(1)">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="weekdays">
+    @for (day of weekDays; track day) {
+    <div class="weekday">{{ day }}</div>
+    }
+  </div>
+
+  <div class="weeks">
+    @for (week of weeks(); track $index) {
+    <div class="week">
+      @for (day of week; track day.date) {
+      <div
+        class="day"
+        [class.out-month]="!day.isCurrentMonth"
+        [class.today]="isToday(day.date)"
+        [class.has-tasks]="day.tasks.length > 0"
+      >
+        <div class="day-header">
+          <span class="day-number">{{ day.date.getDate() }}</span>
+        </div>
+        <div class="tasks">
+          @for (task of day.tasks; track task.id) {
+          <button
+            class="task-chip"
+            type="button"
+            [title]="task.description || ''"
+            (click)="onOpenTask(task)"
+          >
+            <span class="task-title">{{ task.title }}</span>
+          </button>
+          }
+        </div>
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  @if (currentTask()) {
+  <div class="task-modal-backdrop" (click)="onCloseTask()"></div>
+  <div class="task-modal">
+    <app-task [data]="currentTask()" (close)="onCloseTask()" (refreshTasks)="onRefreshTasks()" />
+  </div>
+  }
+</div>
