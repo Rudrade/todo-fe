@@ -57,7 +57,7 @@ export class TaskComponent {
       this.form.patchValue({
         title: this.data()?.title,
         description: this.data()?.description,
-        dueDate: this.data()?.dueDate,
+        dueDate: this.formatDateForInput(this.data()?.dueDate),
       });
       this.selectList(this.data()?.listName || '');
 
@@ -77,7 +77,7 @@ export class TaskComponent {
       validators: [Validators.required],
     }),
     description: new FormControl(this.data()?.description),
-    dueDate: new FormControl(this.data()?.dueDate),
+    dueDate: new FormControl(this.formatDateForInput(this.data()?.dueDate)),
   });
 
   get userListOptions() {
@@ -133,13 +133,14 @@ export class TaskComponent {
 
     if (this.form.valid) {
       const title = this.title?.value ? this.title.value : '';
+      const dueDate = this.parseDateValue(this.dueDate?.value);
 
       this.taskService
         .saveTask({
           id: this.currentId,
           title,
           description: this.description?.value,
-          dueDate: this.dueDate?.value,
+          dueDate,
           completed: false,
           listName: this.selectedList,
           tags: this.selectedTags(),
@@ -171,5 +172,27 @@ export class TaskComponent {
 
   get dueDate() {
     return this.form.get('dueDate');
+  }
+
+  private formatDateForInput(dateValue: Date | string | undefined | null) {
+    if (!dateValue) {
+      return undefined;
+    }
+    const date = typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
+    if (isNaN(date.getTime())) {
+      return undefined;
+    }
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+
+  private parseDateValue(dateValue: string | null | undefined): Date | undefined {
+    if (!dateValue) {
+      return undefined;
+    }
+    const parsed = new Date(dateValue);
+    return isNaN(parsed.getTime()) ? undefined : parsed;
   }
 }
