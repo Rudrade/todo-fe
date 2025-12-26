@@ -24,6 +24,8 @@ li a {
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
+  max-height: 150px;
+  overflow-y: auto;
 }
 
 .count-badge {

@@ -15,6 +15,7 @@
   height: 100%;
   width: 40%;
   padding: 2em 1em;
+  animation: slide-in-right 300ms ease-out;
 }
 
 .ng-invalid.ng-dirty {
@@ -39,4 +40,15 @@ small {
 
 .position-absolute {
   position: absolute;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
 }
