@@ -53,7 +53,11 @@
           </a>
         </li>
         <li class="d-flex flex-row align-items-center">
-          <a class="icon-link icon-link-hover">
+          <a
+            class="icon-link icon-link-hover"
+            [routerLink]="['/calendar']"
+            [routerLinkActive]="'active'"
+          >
             <i class="bi bi-calendar3 me-3"></i>
             Calendar
           </a>
