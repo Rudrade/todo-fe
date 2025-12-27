@@ -6,3 +6,9 @@
   flex-shrink: 0;
   vertical-align: middle;
 }
+
+.alerts {
+  position: fixed;
+  top: 5px;
+  right: 5px;
+}

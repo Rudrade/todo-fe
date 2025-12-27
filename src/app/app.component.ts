@@ -1,32 +1,10 @@
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { AuthService } from './services/authService';
-import { MenuComponent } from './components/menu/menu';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { AlertComponent } from './shared/alert/alert';
-import { AlertService } from './services/alertService';
-import { take } from 'rxjs';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.css',
-  imports: [MenuComponent, RouterOutlet, AlertComponent],
+  imports: [RouterOutlet],
 })
-export class App implements OnInit {
-  private authService = inject(AuthService);
-  private alertService = inject(AlertService);
-
-  alerts = this.alertService.allAlerts;
-
-  ngOnInit() {
-    this.authService
-      .getAuthToken('rui')
-      .pipe(take(1))
-      .subscribe({
-        next: (authToken) => sessionStorage.setItem('sessionData', authToken),
-        error: (error) => {
-          this.alertService.addAlert('error', error.message);
-        },
-      });
-  }
-}
+export class App {}
