@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/authService';
 import { Router } from '@angular/router';
@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit {
   private readonly router = inject(Router);
 
   alerts = this.alertService.allAlerts;
+  error = signal<boolean>(false);
 
   form = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
               this.authService.setToken(resp.token);
               this.router.navigate(['/']);
             },
-            error: (error) => this.alertService.addAlert('error', error.message),
+            error: (error) => this.error.set(true),
           });
       }
     }
