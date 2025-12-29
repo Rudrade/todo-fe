@@ -8,9 +8,9 @@ import { take } from 'rxjs';
   providedIn: 'root',
 })
 export class UserListService {
-  private httpClient = inject(HttpClient);
+  private readonly httpClient = inject(HttpClient);
 
-  private lists = signal<UserList[]>([]);
+  private readonly lists = signal<UserList[]>([]);
   userLists = this.lists.asReadonly();
 
   constructor() {

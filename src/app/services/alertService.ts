@@ -5,7 +5,7 @@ import { Alert } from '../models/alert';
   providedIn: 'root',
 })
 export class AlertService {
-  private alerts = signal<Alert[]>([]);
+  private readonly alerts = signal<Alert[]>([]);
   allAlerts = this.alerts.asReadonly();
 
   addAlert(type: 'error' | 'success', message: string) {
@@ -23,5 +23,9 @@ export class AlertService {
   closeAlert(id: string) {
     this.alerts.update((prev) => prev.filter((alert) => alert.id !== id));
     console.log('[CloseAlert]', this.alerts());
+  }
+
+  clearAllAlerts() {
+    this.alerts.set([]);
   }
 }

@@ -1,17 +1,1 @@
-<div class="container app-container">
-  <div class="row">
-    <div class="col flex-column">
-      <app-menu />
-    </div>
-
-    <div class="col flex-column">
-      <router-outlet />
-    </div>
-  </div>
-</div>
-
-<div class="alerts">
-  @for (alert of alerts(); track alert.id) {
-  <app-alert [data]="alert" />
-  }
-</div>
+<router-outlet />

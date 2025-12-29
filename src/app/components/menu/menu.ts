@@ -3,6 +3,7 @@ import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { UserListService } from '../../services/userService';
 import { TagsService } from '../../services/tagsService';
 import { TagComponent } from '../tag/tag';
+import { AuthService } from '../../services/authService';
 
 @Component({
   selector: 'app-menu',
@@ -11,9 +12,10 @@ import { TagComponent } from '../tag/tag';
   imports: [RouterLink, RouterLinkActive, TagComponent],
 })
 export class MenuComponent {
-  private router = inject(Router);
-  private userListService = inject(UserListService);
-  private tagsService = inject(TagsService);
+  private readonly router = inject(Router);
+  private readonly userListService = inject(UserListService);
+  private readonly tagsService = inject(TagsService);
+  private readonly authService = inject(AuthService);
 
   userLists = this.userListService.userLists;
   userTags = this.tagsService.userTags;
@@ -52,6 +54,6 @@ export class MenuComponent {
   }
 
   onLogout() {
-    sessionStorage.clear(); // TODO: Impl this correctly
+    this.authService.logout();
   }
 }
