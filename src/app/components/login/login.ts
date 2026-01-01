@@ -21,6 +21,7 @@ export class LoginComponent implements OnInit {
 
   alerts = this.alertService.allAlerts;
   error = signal<boolean>(false);
+  submitting = signal<boolean>(false);
 
   form = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
       const username = this.form.get('username')?.value;
       const password = this.form.get('password')?.value;
       if (username && password) {
+        this.submitting.set(true);
         this.authService
           .fetchAuthToken(username, password)
           .pipe(take(1))
@@ -45,8 +47,12 @@ export class LoginComponent implements OnInit {
             next: (resp) => {
               this.authService.setToken(resp.token);
               this.router.navigate(['/']);
+              this.submitting.set(false);
             },
-            error: (error) => this.error.set(true),
+            error: () => {
+              this.submitting.set(false);
+              this.error.set(true);
+            },
           });
       }
     }

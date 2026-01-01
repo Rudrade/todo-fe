@@ -16,12 +16,23 @@
       <input id="password" type="password" class="form-control" formControlName="password" />
     </div>
 
-    <button class="btn btn-primary" type="submit">Login</button>
-    <button class="btn btn-link ms-2" type="button" [routerLink]="'/register'">Register</button>
+    <button class="btn btn-primary" type="submit" [disabled]="submitting()">Login</button>
+    <button
+      class="btn btn-link ms-2"
+      type="button"
+      [routerLink]="'/register'"
+      [disabled]="submitting()"
+    >
+      Register
+    </button>
   </form>
 
-  @if (error()) {
+  @if (error() && !submitting()) {
   <small style="color: red">Invalid user credentials</small>
+  } @if(submitting()) {
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status"></div>
+  </div>
   }
 </div>
 

@@ -40,6 +40,7 @@ export class RegisterComponent implements OnInit {
 
   alerts = this.alertService.allAlerts;
   error = signal<string | null>(null);
+  submitting = signal<boolean>(false);
 
   form: RegisterForm = this.fb.group(
     {
@@ -70,8 +71,7 @@ export class RegisterComponent implements OnInit {
       return;
     }
 
-    console.log('[Register] Form valid');
-    console.log('[Form] ', this.form);
+    this.submitting.set(true);
 
     const { username, email, password } = this.form.getRawValue();
     this.userService
@@ -85,9 +85,11 @@ export class RegisterComponent implements OnInit {
             'Register completed. Please check your email for confirmation.'
           );
           this.router.navigate(['/login']);
+          this.submitting.set(false);
         },
         error: (err) => {
           this.error.set(err.error.message);
+          this.submitting.set(false);
         },
       });
   }
