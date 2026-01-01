@@ -9,7 +9,7 @@ import {
   SimpleChanges,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { UserListService } from '../../services/userService';
+import { UserListService } from '../../services/userListService';
 
 @Component({
   selector: 'app-search-select',

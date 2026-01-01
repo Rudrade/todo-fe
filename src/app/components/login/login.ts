@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../../services/authService';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { take } from 'rxjs';
 import { AlertService } from '../../services/alertService';
 import { AlertComponent } from '../../shared/alert/alert';
@@ -10,7 +10,7 @@ import { AlertComponent } from '../../shared/alert/alert';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AlertComponent],
+  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })

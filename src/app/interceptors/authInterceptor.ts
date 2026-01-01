@@ -5,10 +5,13 @@ import { AuthService } from '../services/authService';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
-    const authToken = authService.getAuthToken();
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Register doesnt require token
+    if (req.url.includes('/register')) return next.handle(req);
+
+    const authToken = this.authService.getAuthToken();
 
     if (authToken) {
       req = req.clone({

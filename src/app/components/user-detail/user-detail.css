@@ -1,0 +1,39 @@
+.sidebar-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.sidebar {
+  background-color: white;
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: 40%;
+  padding: 2em 1em;
+  animation: slide-in-right 300ms ease-out;
+}
+
+.ng-invalid.ng-touched {
+  border-color: red;
+}
+
+small {
+  color: red;
+}
+
+@keyframes slide-in-right {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+

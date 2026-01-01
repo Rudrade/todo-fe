@@ -1,0 +1,56 @@
+<div class="sidebar-background" (click)="onClose()">
+  <div class="sidebar" (click)="$event.stopPropagation()">
+    <h2 class="mb-3">User Detail</h2>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-floating mb-3">
+        <input type="text" class="form-control" placeholder="Username" formControlName="username" />
+        <label for="input-username">Username *</label>
+        @if (form.controls.username.invalid && form.controls.username.touched) {
+        <small>This field is required!</small>
+        }
+      </div>
+
+      <div class="form-floating mb-3">
+        <input type="email" class="form-control" placeholder="Email" formControlName="email" />
+        <label for="input-email">Email *</label>
+        @if (form.controls.email.invalid && form.controls.email.touched) {
+        <small>Provide a valid email.</small>
+        }
+      </div>
+
+      <div class="form-floating mb-3">
+        <select type="dropdown" class="form-select" placeholder="Role" formControlName="role">
+          <option value="ROLE_USER">User</option>
+          <option value="ROLE_ADMIN">Administrator</option>
+        </select>
+        <label for="input-role">Role *</label>
+      </div>
+
+      <div class="d-flex mt-5 gap-2">
+        <button class="btn btn-warning" type="submit" [disabled]="submitting()">
+          Save changes
+        </button>
+        @if (!data()?.active) {
+        <button
+          class="btn btn-outline-success"
+          type="button"
+          (click)="onChangeStatus(true)"
+          [disabled]="submitting()"
+        >
+          Activate
+        </button>
+        } @else {
+        <button
+          class="btn btn-outline-danger"
+          type="button"
+          (click)="onChangeStatus(false)"
+          [disabled]="submitting()"
+        >
+          Deactivate
+        </button>
+        }
+        <button type="button" class="btn btn-secondary ms-auto" (click)="onClose()">Close</button>
+      </div>
+    </form>
+  </div>
+</div>

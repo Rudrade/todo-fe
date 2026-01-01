@@ -1,0 +1,92 @@
+<section class="users-wrapper">
+  <form class="row g-2 mb-3" [formGroup]="filterForm" (ngSubmit)="onSubmit()">
+    <div class="d-flex align-items-center justify-content-between mb-3">
+      <h2 class="mb-0">Users</h2>
+      <div class="form-check form-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="onlyActive"
+          formControlName="onlyActive"
+          (click)="onToggleActive()"
+        />
+        <label class="form-check-label" for="onlyActive">Active</label>
+      </div>
+    </div>
+
+    <div class="col-sm-3">
+      <label class="form-label" for="filterField">Filter by</label>
+      <select class="form-select" id="filterField" formControlName="filterField">
+        <option value="USERNAME">Username</option>
+        <option value="EMAIL">Email</option>
+      </select>
+    </div>
+    <div class="col-sm-6">
+      <label class="form-label" for="filterValue">Value</label>
+      <input
+        id="filterValue"
+        type="text"
+        class="form-control"
+        formControlName="filterValue"
+        placeholder="Enter search text"
+        autocomplete="off"
+      />
+    </div>
+    <div class="col-sm-3 d-flex align-items-end gap-2">
+      <button class="btn btn-primary" type="submit">Search</button>
+      <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">Clear</button>
+    </div>
+  </form>
+
+  @if (loading()) {
+  <div class="d-flex justify-content-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  } @else if (!users().length) {
+  <p>No users found.</p>
+  } @else {
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th scope="col">Username</th>
+          <th scope="col">Email</th>
+          <th scope="col">Active</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (user of users(); track user.username) {
+        <tr
+          (click)="onOpenUser(user)"
+          (keyup.enter)="onOpenUser(user)"
+          (keydown.enter)="onOpenUser(user)"
+          tabindex="0"
+          [attr.aria-label]="'Open user ' + user.username"
+        >
+          <td>{{ user.username }}</td>
+          <td>{{ user.email }}</td>
+          <td>
+            @if (user.active === false) {
+            <span class="badge bg-secondary">Inactive</span>
+            } @else {
+            <span class="badge bg-success">Active</span>
+            }
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</section>
+
+@if (selectedUser()) {
+<app-user-detail
+  [data]="selectedUser()"
+  (close)="onCloseUser()"
+  (refreshUsers)="onRefreshUsers()"
+/>
+}

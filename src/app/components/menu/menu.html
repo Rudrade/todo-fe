@@ -2,6 +2,7 @@
   <!--Header and Search -->
   <div class="row align-self-start">
     <h3 class="navbar-text">Menu</h3>
+    @if (!hideSearch) {
     <form class="d-flex">
       <input class="form-control" type="search" placeholder="Search" #searchInput />
       <button
@@ -12,6 +13,7 @@
         <i class="bi bi-search"></i>
       </button>
     </form>
+    }
   </div>
 
   <!-- Main Menu -->
@@ -107,6 +109,19 @@
   <div class="row align-self-start my-3">
     <div class="container ms-4">
       <ul>
+        @if (isAdmin) {
+        <li class="d-flex flex-row">
+          <a
+            class="icon-link icon-link-hover"
+            [routerLink]="['/users']"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <i class="bi bi-people me-3 align-middle"></i>
+            Users
+          </a>
+        </li>
+        }
         <li class="d-flex flex-row">
           <a href="#" class="icon-link icon-link-hover">
             <i class="bi bi-gear me-3 align-middle"></i>

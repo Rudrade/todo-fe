@@ -5,7 +5,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { TaskService } from '../../services/taskService';
 import { take } from 'rxjs';
 import { AlertService } from '../../services/alertService';
-import { UserListService } from '../../services/userService';
+import { UserListService } from '../../services/userListService';
 import { TagsService } from '../../services/tagsService';
 import { TagComponent } from '../tag/tag';
 import { SearchSelectComponent } from '../../shared/search-select/search-select';
