@@ -1,0 +1,10 @@
+<div class="activation-container">
+  @if (loading()) {
+  <p>Activating your account...</p>
+  } @if (!loading()) { @if (success()) {
+  <p>Congratulations on activating your account!</p>
+  } @else {
+  <p>An error occured while activating your account.</p>
+  } }
+  <button type="button" class="btn btn-primary" [routerLink]="'/login'">Go to login page</button>
+</div>

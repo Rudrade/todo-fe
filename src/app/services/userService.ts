@@ -52,6 +52,10 @@ export class UserService {
       active,
     });
   }
+
+  activateUser(id: string) {
+    return this.httpClient.post(`${this.baseUsersUrl}/activate/${id}`, {});
+  }
 }
 
 interface UsersResonse {

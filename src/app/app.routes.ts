@@ -7,6 +7,7 @@ import { UsersComponent } from './components/users/users';
 import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 import { WrapperComponent } from './components/wrapper/wrapper';
+import { ActivationPage } from './landing-pages/activation-page/activation-page';
 
 export const routes: Routes = [
   {
@@ -43,6 +44,10 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'mailActivation/:id',
+    component: ActivationPage,
   },
   {
     path: '**',
