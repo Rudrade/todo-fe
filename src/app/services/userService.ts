@@ -1,49 +1,63 @@
-import { HttpClient } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { UserList } from '../models/userList';
-import { take } from 'rxjs';
+import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserListService {
+export class UserService {
   private readonly httpClient = inject(HttpClient);
+  private readonly baseUsersUrl = environment.apiUrl + 'users';
 
-  private readonly lists = signal<UserList[]>([]);
-  userLists = this.lists.asReadonly();
-
-  constructor() {
-    this.fetchUserLists();
-  }
-
-  fetchUserLists() {
-    this.httpClient
-      .get<UserListResponse>(environment.apiUrl + 'task/lists')
-      .pipe(take(1))
-      .subscribe({
-        next: (resp) => this.lists.set(resp.lists),
-        complete: () => console.log('List fetched: ', this.lists()),
-      });
-  }
-
-  getListByName(name: string) {
-    return this.userLists().find((lst) => lst.name === name);
-  }
-
-  listColor(color: string) {
-    if (!color || color === '') {
-      color = '#000';
+  listUsers(options: {
+    onlyActive: boolean;
+    filterField: 'USERNAME' | 'EMAIL';
+    filterValue: string;
+  }) {
+    let params = new HttpParams().set('active', options.onlyActive);
+    if (options.filterValue?.trim()) {
+      params = params
+        .set('searchType', options.filterField)
+        .set('searchTerm', options.filterValue.trim());
     }
-    return `background-color: ${color}; border-color: ${color};`;
+
+    return this.httpClient.get<UsersResonse>(this.baseUsersUrl, { params });
   }
 
-  listColorByName(listName: string) {
-    const list = this.getListByName(listName);
-    return this.listColor(list?.color || '');
+  registerUser(
+    username: string,
+    email: string,
+    password: string,
+    role: 'ROLE_ADMIN' | 'ROLE_USER'
+  ) {
+    return this.httpClient.post(this.baseUsersUrl + '/register', {
+      username,
+      email,
+      password,
+      role,
+    });
+  }
+
+  getUser(id: string) {
+    return this.httpClient.get<User>(`${this.baseUsersUrl}/${id}`);
+  }
+
+  updateUser(user: Partial<User> & { id: string }) {
+    return this.httpClient.patch<User>(`${this.baseUsersUrl}/${user.id}`, user);
+  }
+
+  changeUserStatus(id: string, active: boolean) {
+    return this.httpClient.patch(`${this.baseUsersUrl}/${id}`, {
+      active,
+    });
+  }
+
+  activateUser(id: string) {
+    return this.httpClient.post(`${this.baseUsersUrl}/activate/${id}`, {});
   }
 }
 
-interface UserListResponse {
-  lists: UserList[];
+interface UsersResonse {
+  users: User[];
 }

@@ -1,0 +1,19 @@
+.users-wrapper {
+  padding: 1rem;
+}
+
+.table th,
+.table td {
+  vertical-align: middle;
+}
+
+.form-check-input:checked {
+  background-color: green;
+  border-color: green;
+}
+
+.table tbody tr:hover,
+.table tbody tr:hover td {
+  background-color: lightgray;
+  cursor: pointer;
+}

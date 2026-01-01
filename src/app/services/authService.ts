@@ -20,7 +20,6 @@ export class AuthService {
     // Get cookie
     const authToken = sessionStorage.getItem(this.keyStorage);
     if (!authToken) {
-      // Redirect to login page
       this.logout();
       return;
     }
@@ -41,6 +40,24 @@ export class AuthService {
 
     // Token is valid
     return !!authToken && this.isTokenValid(authToken);
+  }
+
+  isAdminUser(): boolean {
+    return this.getUserRoles() === 'ROLE_ADMIN';
+  }
+
+  private getUserRoles(): string {
+    const authToken = sessionStorage.getItem(this.keyStorage);
+    if (!authToken) return '';
+
+    try {
+      const decodedToken = jwtDecode(authToken) as { role: string };
+      return decodedToken.role;
+    } catch (error) {
+      console.warn('Unable to decode token for roles', error);
+    }
+
+    return '';
   }
 
   private isTokenValid(authToken: string) {

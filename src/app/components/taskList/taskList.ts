@@ -5,7 +5,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AlertService } from '../../services/alertService';
 import { Task } from '../../models/task';
 import { TaskComponent } from '../task/task';
-import { UserListService } from '../../services/userService';
+import { UserListService } from '../../services/userListService';
 import { TagsService } from '../../services/tagsService';
 
 @Component({
