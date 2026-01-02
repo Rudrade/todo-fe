@@ -15,4 +15,7 @@ jobs:
         with:
           node-version: 24
           cache: 'npm'
-      - run: npm ci
+      - name: Install dependencies
+        run: npm ci
+      - name: Build Angular project
+        run: npm run build -- --configuration production # Update to match your build script
