@@ -80,7 +80,7 @@ export class AuthService {
     if (!decodedToken || !decodedToken.exp) return false;
 
     const now = new Date().getTime();
-    const exp = decodedToken.exp * 1000 - 10000; // exp date - 10s
+    const exp = decodedToken.exp * 1000 - 60000; // exp date - 60s
     const valid = exp > now;
     return valid;
   }
