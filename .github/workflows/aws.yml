@@ -2,16 +2,17 @@ name: Deploy to AWS
 
 on:
   push:
-    branches: [ "master" ]
-    
+    tags:
+      - '*'
+
 env:
-  AWS_REGION: ${{ secrets.AWS_REGION }}                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}           # set this to your Amazon ECR repository name
-  ECS_SERVICE: ${{ secrets.ECS_SERVICE }}                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }}                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }}  # set this to the path to your Amazon ECS task definition
+  AWS_REGION: ${{ secrets.AWS_REGION }} # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }} # set this to your Amazon ECR repository name
+  ECS_SERVICE: ${{ secrets.ECS_SERVICE }} # set this to your Amazon ECS service name
+  ECS_CLUSTER: ${{ secrets.ECS_CLUSTER }} # set this to your Amazon ECS cluster name
+  ECS_TASK_DEFINITION: ${{ secrets.ECS_TASK_DEFINITION }} # set this to the path to your Amazon ECS task definition
   # file, e.g. .aws/task-definition.json
-  CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }}           # set this to the name of the container in the
+  CONTAINER_NAME: ${{ secrets.CONTAINER_NAME }} # set this to the name of the container in the
   # containerDefinitions section of your task definition
 
 permissions:
@@ -19,9 +20,9 @@ permissions:
 
 jobs:
   build:
-      runs-on: ubuntu-latest
-  
-      steps:
+    runs-on: ubuntu-latest
+
+    steps:
       - uses: actions/checkout@v5
       - name: Set up node 24
         uses: actions/setup-node@v6
@@ -29,7 +30,7 @@ jobs:
           node-version: 24
           cache: 'npm'
       - run: npm ci
-        
+
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
