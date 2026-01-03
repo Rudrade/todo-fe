@@ -2,6 +2,7 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/authService';
+import { jwtDecode } from 'jwt-decode';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -9,7 +10,11 @@ export class AuthInterceptor implements HttpInterceptor {
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // Register doesnt require token
-    if (req.url.includes('/register') || req.url.includes('activate')) {
+    if (
+      req.url.includes('/register') ||
+      req.url.includes('activate') ||
+      req.url.includes('/auth/refresh')
+    ) {
       return next.handle(req);
     }
 
