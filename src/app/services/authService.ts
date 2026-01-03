@@ -4,6 +4,7 @@ import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AlertService } from './alertService';
+import { take } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +19,7 @@ export class AuthService {
 
   getAuthToken() {
     // Get cookie
-    const authToken = sessionStorage.getItem(this.keyStorage);
+    let authToken = sessionStorage.getItem(this.keyStorage);
     if (!authToken) {
       this.logout();
       return;
@@ -26,8 +27,22 @@ export class AuthService {
 
     // Verify if cookie is valid
     if (!this.isTokenValid(authToken)) {
-      this.logout(); // TODO: Refresh token in backend
-      return;
+      this.httpClient
+        .get<AuthResponse>(this.href + 'refresh', {
+          headers: {
+            Authorization: 'Bearer ' + authToken,
+          },
+        })
+        .pipe(take(1))
+        .subscribe({
+          next: (res) => {
+            authToken = res.token;
+            this.setToken(res.token);
+          },
+          error: () => {
+            this.logout();
+          },
+        });
     }
 
     // If cookie is valid, return token
@@ -65,7 +80,7 @@ export class AuthService {
     if (!decodedToken || !decodedToken.exp) return false;
 
     const now = new Date().getTime();
-    const exp = decodedToken.exp * 1000;
+    const exp = decodedToken.exp * 1000 - 60000; // exp date - 60s
     const valid = exp > now;
     return valid;
   }
@@ -77,7 +92,7 @@ export class AuthService {
   }
 
   fetchAuthToken(username: string, password: string) {
-    return this.httpClient.post<AuthResponse>(this.href, {
+    return this.httpClient.post<AuthResponse>(this.href + 'login', {
       username,
       password,
     });
