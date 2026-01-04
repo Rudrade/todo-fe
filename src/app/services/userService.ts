@@ -56,6 +56,18 @@ export class UserService {
   activateUser(id: string) {
     return this.httpClient.post(`${this.baseUsersUrl}/activate/${id}`, {});
   }
+
+  fetchRequests() {
+    return this.httpClient.get<{ requests: User[] }>(`${this.baseUsersUrl}/requests`);
+  }
+
+  sendMail(id: string) {
+    return this.httpClient.patch(`${this.baseUsersUrl}/requests/mail/${id}`, {});
+  }
+
+  deleteUserRequest(id: string) {
+    return this.httpClient.delete(`${this.baseUsersUrl}/requests/${id}`);
+  }
 }
 
 interface UsersResonse {

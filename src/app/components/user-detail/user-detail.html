@@ -1,6 +1,6 @@
 <div class="sidebar-background" (click)="onClose()">
   <div class="sidebar" (click)="$event.stopPropagation()">
-    <h2 class="mb-3">User Detail</h2>
+    <h2 class="mb-3">User {{ data()?.isRequest ? 'Request' : 'Detail' }}</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-floating mb-3">
         <input type="text" class="form-control" placeholder="Username" formControlName="username" />
@@ -26,7 +26,31 @@
         <label for="input-role">Role *</label>
       </div>
 
+      @if (data()?.isRequest) {
+      <div class="form-floating mt-4 d-flex align-items-center">
+        <div>
+          <i class="bi bi-envelope-arrow-up"></i> Mail Sent:
+          <span [style]="`color: ${data()?.mailSent ? 'green' : 'red'}`">
+            {{ data()?.mailSent ? 'Yes' : 'No' }}
+          </span>
+        </div>
+        @if (!sendingMail()) {
+        <div class="tooltip-container ms-2" tabindex="0" aria-label="Send Mail">
+          <i class="bi bi-send" aria-hidden="true" (click)="onSendMail()"></i>
+          <span class="tooltip-text" role="tooltip">Send Mail</span>
+        </div>
+        } @else {
+        <div class="spinner-border" role="status" style="scale: 0.5"></div>
+        }
+      </div>
+      }
+
       <div class="d-flex mt-5 gap-2">
+        @if (data()?.isRequest) {
+        <button class="btn btn-danger" type="button" (click)="onDeleteRequest()">
+          Delete Request
+        </button>
+        } @else {
         <button class="btn btn-warning" type="submit" [disabled]="submitting()">
           Save changes
         </button>
@@ -48,7 +72,7 @@
         >
           Deactivate
         </button>
-        }
+        } }
         <button type="button" class="btn btn-secondary ms-auto" (click)="onClose()">Close</button>
       </div>
     </form>

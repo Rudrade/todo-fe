@@ -1,13 +1,8 @@
 import { HttpErrorResponse } from '@angular/common/http';
 
 export function translateErrorMessage(resp: HttpErrorResponse): string {
-  // Doesnt contain error message from server, return as unkown
-  if (!resp?.error?.message) {
-    return 'Unkown error';
-  }
-
   // Translate invalid data
-  if (resp.status === 400) {
+  if (resp.status === 400 && resp.error.message) {
     let message = resp.error.message;
 
     if (resp.error.errors) {
@@ -15,7 +10,9 @@ export function translateErrorMessage(resp: HttpErrorResponse): string {
     }
 
     return message;
+  } else if (resp.status === 403) {
+    return 'Invalid Access';
   }
 
-  return resp.error.message;
+  return resp.error.message || 'Unkown error';
 }

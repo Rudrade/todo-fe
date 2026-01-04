@@ -1,10 +1,12 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate as fDate } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { take } from 'rxjs';
 import { UserService } from '../../services/userService';
 import { User } from '../../models/user';
 import { UserDetailComponent } from '../user-detail/user-detail';
+import { AlertService } from '../../services/alertService';
+import { translateErrorMessage } from '../../shared/util/appUtil';
 
 @Component({
   selector: 'app-users',
@@ -15,10 +17,12 @@ import { UserDetailComponent } from '../user-detail/user-detail';
 })
 export class UsersComponent implements OnInit {
   private readonly userService = inject(UserService);
+  private readonly alertService = inject(AlertService);
 
   users = signal<User[]>([]);
   loading = signal<boolean>(false);
   selectedUser = signal<User | undefined>(undefined);
+  view = signal<'user' | 'request'>('user');
 
   filterForm = new FormGroup({
     onlyActive: new FormControl<boolean>(false, { nonNullable: true }),
@@ -28,7 +32,7 @@ export class UsersComponent implements OnInit {
 
   ngOnInit(): void {
     this.filterForm.controls.onlyActive.setValue(true);
-    this.loadUsers();
+    this.loadData();
   }
 
   onOpenUser(user: User) {
@@ -40,22 +44,30 @@ export class UsersComponent implements OnInit {
   }
 
   onRefreshUsers() {
-    this.loadUsers();
+    this.loadData();
   }
 
   onToggleActive() {
     const checked = this.filterForm.controls.onlyActive.value;
     this.filterForm.controls.onlyActive.setValue(!checked);
-    this.loadUsers();
+    this.loadData();
   }
 
   onSubmit() {
-    this.loadUsers();
+    this.loadData();
   }
 
   clearSearch() {
     this.filterForm.controls.filterValue.setValue('');
-    this.loadUsers();
+    this.loadData();
+  }
+
+  private loadData() {
+    if (this.view() === 'request') {
+      this.loadUserRequests();
+    } else {
+      this.loadUsers();
+    }
   }
 
   private loadUsers() {
@@ -72,8 +84,36 @@ export class UsersComponent implements OnInit {
         next: (resp) => {
           this.users.set(resp.users);
         },
-        error: () => this.users.set([]),
+        error: (res) => {
+          this.alertService.addAlert('error', translateErrorMessage(res));
+          this.users.set([]);
+        },
         complete: () => this.loading.set(false),
       });
+  }
+
+  private loadUserRequests() {
+    this.loading.set(true);
+    this.userService
+      .fetchRequests()
+      .pipe(take(1))
+      .subscribe({
+        next: (resp) => {
+          resp.requests.map((user) => (user.isRequest = true));
+          this.users.set(resp.requests);
+        },
+        error: (res) => this.alertService.addAlert('error', translateErrorMessage(res)),
+        complete: () => this.loading.set(false),
+      });
+  }
+
+  onChangeView(view: 'user' | 'request') {
+    this.view.set(view);
+    this.loadData();
+  }
+
+  formatDate(value: Date | undefined) {
+    if (!value) return '';
+    return fDate(value, 'dd/MM/yyyy', 'en-US');
   }
 }

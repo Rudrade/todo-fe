@@ -3,5 +3,8 @@ export interface User {
   username: string;
   email: string;
   role: 'ROLE_USER' | 'ROLE_ADMIN';
-  active: boolean;
+  active: boolean | undefined;
+  mailSent: boolean | undefined;
+  dtCreated: Date | undefined;
+  isRequest: boolean;
 }
