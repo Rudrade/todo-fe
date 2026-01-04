@@ -1,5 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { Alert } from '../models/alert';
+import { translateErrorMessage } from '../shared/util/appUtil';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +20,10 @@ export class AlertService {
       },
     ]);
     console.log('[AddAlert]', this.alerts());
+  }
+
+  addErrorAlert(res: HttpErrorResponse) {
+    this.addAlert('error', translateErrorMessage(res));
   }
 
   closeAlert(id: string) {

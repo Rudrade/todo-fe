@@ -17,3 +17,7 @@
   background-color: lightgray;
   cursor: pointer;
 }
+
+#tab-view a:hover {
+  cursor: pointer;
+}

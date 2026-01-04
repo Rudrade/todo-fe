@@ -23,6 +23,7 @@ export class UserDetailComponent {
   refreshUsers = output<void>();
 
   submitting = signal<boolean>(false);
+  sendingMail = signal<boolean>(false);
 
   form = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -45,6 +46,13 @@ export class UserDetailComponent {
           email: user.email,
           role: user.role,
         });
+
+        // Toggle read-only mode for requests
+        if (user.isRequest) {
+          this.form.disable({ emitEvent: false });
+        } else {
+          this.form.enable({ emitEvent: false });
+        }
       }
     });
   }
@@ -99,6 +107,50 @@ export class UserDetailComponent {
         error: (error) => this.alertService.addAlert('error', translateErrorMessage(error)),
         complete: () => {
           this.submitting.set(false);
+        },
+      });
+  }
+
+  onSendMail() {
+    const id = this.data()?.id;
+    if (!id) return;
+
+    this.sendingMail.set(true);
+
+    this.userService
+      .sendMail(id)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.alertService.addAlert('success', 'Mail sent successfully');
+          this.sendingMail.set(false);
+        },
+        error: (res) => {
+          this.alertService.addAlert('error', translateErrorMessage(res));
+          this.sendingMail.set(true);
+        },
+      });
+  }
+
+  onDeleteRequest() {
+    const id = this.data()?.id;
+    if (!id) return;
+
+    if (!confirm('Are you sure you want to delete this request?')) {
+      return;
+    }
+
+    this.userService
+      .deleteUserRequest(id)
+      .pipe(take(1))
+      .subscribe({
+        next: () => {
+          this.alertService.addAlert('success', 'User request deleted.');
+          this.onClose();
+          this.refreshUsers.emit();
+        },
+        error: (res) => {
+          this.alertService.addErrorAlert(res);
         },
       });
   }

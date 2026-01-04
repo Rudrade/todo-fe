@@ -2,6 +2,8 @@
   <form class="row g-2 mb-3" [formGroup]="filterForm" (ngSubmit)="onSubmit()">
     <div class="d-flex align-items-center justify-content-between mb-3">
       <h2 class="mb-0">Users</h2>
+
+      @if (view() === 'user') {
       <div class="form-check form-switch">
         <input
           class="form-check-input"
@@ -13,6 +15,7 @@
         />
         <label class="form-check-label" for="onlyActive">Active</label>
       </div>
+      }
     </div>
 
     <div class="col-sm-3">
@@ -39,26 +42,48 @@
     </div>
   </form>
 
-  @if (loading()) {
-  <div class="d-flex justify-content-center">
-    <div class="spinner-border" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
+  <div class="mb-3">
+    <ul class="nav nav-tabs" id="tab-view">
+      <li class="nav-item">
+        <a
+          [class]="view() === 'user' ? 'nav-link active' : 'nav-link'"
+          (click)="onChangeView('user')"
+          >Users</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          [class]="view() === 'request' ? 'nav-link active' : 'nav-link'"
+          (click)="onChangeView('request')"
+          >Requests</a
+        >
+      </li>
+    </ul>
   </div>
-  } @else if (!users().length) {
-  <p>No users found.</p>
-  } @else {
   <div class="table-responsive">
     <table class="table align-middle">
       <thead>
         <tr>
           <th scope="col">Username</th>
           <th scope="col">Email</th>
+          @if (view() === 'request') {
+          <th scope="col">Date Created</th>
+          <th scope="col">Mail sent</th>
+          } @else {
           <th scope="col">Active</th>
+          }
         </tr>
       </thead>
       <tbody>
-        @for (user of users(); track user.username) {
+        @if (loading()) {
+        <div class="d-flex justify-content-center">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+        } @else if (!users().length) {
+        <p>No users found.</p>
+        } @else { @for (user of users(); track user.username) {
         <tr
           (click)="onOpenUser(user)"
           (keyup.enter)="onOpenUser(user)"
@@ -68,6 +93,12 @@
         >
           <td>{{ user.username }}</td>
           <td>{{ user.email }}</td>
+          @if (view() === 'request') {
+          <td>{{ formatDate(user.dtCreated) }}</td>
+          <td [style]="`color:${user.mailSent ? 'green' : 'red'}`">
+            {{ user.mailSent ? 'Yes' : 'No' }}
+          </td>
+          } @else {
           <td>
             @if (user.active === false) {
             <span class="badge bg-secondary">Inactive</span>
@@ -75,12 +106,12 @@
             <span class="badge bg-success">Active</span>
             }
           </td>
+          }
         </tr>
-        }
+        } }
       </tbody>
     </table>
   </div>
-  }
 </section>
 
 @if (selectedUser()) {
