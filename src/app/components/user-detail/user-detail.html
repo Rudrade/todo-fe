@@ -30,8 +30,8 @@
       <div class="form-floating mt-4 d-flex align-items-center">
         <div>
           <i class="bi bi-envelope-arrow-up"></i> Mail Sent:
-          <span [style]="`color: ${data()?.mailSent ? 'green' : 'red'}`">
-            {{ data()?.mailSent ? 'Yes' : 'No' }}
+          <span [style]="`color: ${mailSent() ? 'green' : 'red'}`">
+            {{ mailSent() ? 'Yes' : 'No' }}
           </span>
         </div>
         @if (!sendingMail()) {

@@ -94,8 +94,10 @@ export class UsersComponent implements OnInit {
 
   private loadUserRequests() {
     this.loading.set(true);
+
+    const { filterField, filterValue } = this.filterForm.getRawValue();
     this.userService
-      .fetchRequests()
+      .fetchRequests(filterField, filterValue)
       .pipe(take(1))
       .subscribe({
         next: (resp) => {

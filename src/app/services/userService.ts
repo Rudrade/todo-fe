@@ -57,8 +57,13 @@ export class UserService {
     return this.httpClient.post(`${this.baseUsersUrl}/activate/${id}`, {});
   }
 
-  fetchRequests() {
-    return this.httpClient.get<{ requests: User[] }>(`${this.baseUsersUrl}/requests`);
+  fetchRequests(filterField: 'USERNAME' | 'EMAIL', filterValue: string) {
+    let params;
+    if (filterValue) {
+      params = new HttpParams().set('filterType', filterField).set('filterValue', filterValue);
+    }
+
+    return this.httpClient.get<{ requests: User[] }>(`${this.baseUsersUrl}/requests`, { params });
   }
 
   sendMail(id: string) {
