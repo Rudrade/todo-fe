@@ -24,6 +24,7 @@ export class UserDetailComponent {
 
   submitting = signal<boolean>(false);
   sendingMail = signal<boolean>(false);
+  mailSent = signal<boolean>(this.data()?.mailSent || false);
 
   form = new FormGroup({
     username: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
@@ -122,6 +123,8 @@ export class UserDetailComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
+          this.mailSent.set(true);
+          this.refreshUsers.emit();
           this.alertService.addAlert('success', 'Mail sent successfully');
           this.sendingMail.set(false);
         },
