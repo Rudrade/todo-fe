@@ -1,0 +1,74 @@
+<h2 class="mb-3">Settings</h2>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="form">
+  <div class="form-floating mb-3">
+    <input
+      id="in-settings-username"
+      type="text"
+      class="form-control"
+      placeholder="Username"
+      formControlName="username"
+    />
+    <label for="in-settings-username">Username</label>
+    @if (form.controls.username.invalid && form.controls.username.touched) {
+    <small>This field is required!</small>
+    }
+  </div>
+
+  <div class="form-floating mb-3">
+    <input
+      id="in-settings-email"
+      type="email"
+      class="form-control"
+      placeholder="Email"
+      formControlName="email"
+    />
+    <label for="in-settings-email">Email</label>
+    @if (form.controls.email.invalid && form.controls.email.touched) {
+    <small>Provide a valid email.</small>
+    }
+  </div>
+
+  <div class="form-floating mb-3">
+    <input
+      id="in-settings-password"
+      type="password"
+      class="form-control"
+      placeholder="Password"
+      formControlName="oldPassword"
+    />
+    <label for="in-settings-password">Password *</label>
+    @if (form.controls.oldPassword.invalid && hasPendingChanges) {
+    <small>This field is required to update values.</small>
+    }
+  </div>
+
+  <div class="form-floating mb-3">
+    <input
+      id="in-settings-new-password"
+      type="password"
+      class="form-control"
+      placeholder="New password"
+      formControlName="password"
+    />
+    <label for="in-settings-new-password">New Password</label>
+  </div>
+
+  <div class="form-floating mb-3">
+    <input
+      id="in-settings-new-password-confirm"
+      type="password"
+      class="form-control"
+      placeholder="Confirm new password"
+      formControlName="confirmNewPassword"
+    />
+    <label for="in-settings-new-password-confirm">Confirm new password</label>
+    @if (form.controls.password.touched && form.hasError('passwordsMismatch')) {
+    <small>Password must match</small>
+    }
+  </div>
+
+  <div class="form-floating mb-3">
+    <button type="submit" class="btn btn-warning" [disabled]="!form.valid">Save changes</button>
+  </div>
+</form>

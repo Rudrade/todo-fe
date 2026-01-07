@@ -8,6 +8,8 @@ import { authGuard } from './guards/auth-guard';
 import { adminGuard } from './guards/admin-guard';
 import { WrapperComponent } from './components/wrapper/wrapper';
 import { ActivationPage } from './landing-pages/activation-page/activation-page';
+import { SettingsComponent } from './components/settings/settings';
+import { ConfirmGuard } from './guards/confirm-guard';
 
 export const routes: Routes = [
   {
@@ -34,6 +36,12 @@ export const routes: Routes = [
         path: 'users',
         component: UsersComponent,
         canActivate: [adminGuard],
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent,
+        canActivate: [authGuard],
+        canDeactivate: [ConfirmGuard],
       },
     ],
   },

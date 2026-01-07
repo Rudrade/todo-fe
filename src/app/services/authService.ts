@@ -61,6 +61,13 @@ export class AuthService {
     return this.getUserRoles() === 'ROLE_ADMIN';
   }
 
+  getUserId() {
+    const authToken = sessionStorage.getItem(this.keyStorage);
+    if (!authToken) return undefined;
+
+    return jwtDecode(authToken).sub;
+  }
+
   private getUserRoles(): string {
     const authToken = sessionStorage.getItem(this.keyStorage);
     if (!authToken) return '';

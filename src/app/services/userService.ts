@@ -43,8 +43,8 @@ export class UserService {
     return this.httpClient.get<User>(`${this.baseUsersUrl}/${id}`);
   }
 
-  updateUser(user: Partial<User> & { id: string }) {
-    return this.httpClient.patch<User>(`${this.baseUsersUrl}/${user.id}`, user);
+  updateUser(user: Partial<UpdateUser> & { id: string }) {
+    return this.httpClient.patch<UpdateUser>(`${this.baseUsersUrl}/${user.id}`, user);
   }
 
   changeUserStatus(id: string, active: boolean) {
@@ -77,4 +77,14 @@ export class UserService {
 
 interface UsersResonse {
   users: User[];
+}
+
+interface UpdateUser {
+  id: string;
+  username: string;
+  password: string;
+  email: string;
+  role: 'ROLE_USER' | 'ROLE_ADMIN';
+  active: boolean;
+  oldPassword: string;
 }
