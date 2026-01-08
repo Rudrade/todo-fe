@@ -10,6 +10,8 @@ import { WrapperComponent } from './components/wrapper/wrapper';
 import { ActivationPage } from './landing-pages/activation-page/activation-page';
 import { SettingsComponent } from './components/settings/settings';
 import { ConfirmGuard } from './guards/confirm-guard';
+import { ResetPasswordComponent } from './components/reset-password/reset-password';
+import { PasswordResetPage } from './landing-pages/password-reset-page/password-reset-page';
 
 export const routes: Routes = [
   {
@@ -52,6 +54,14 @@ export const routes: Routes = [
   {
     path: 'register',
     component: RegisterComponent,
+  },
+  {
+    path: 'reset',
+    component: ResetPasswordComponent,
+  },
+  {
+    path: 'resetPassword/:id',
+    component: PasswordResetPage,
   },
   {
     path: 'mailActivation/:id',
