@@ -6,7 +6,7 @@ import { SettingsComponent } from '../components/settings/settings';
 export class ConfirmGuard implements CanDeactivate<SettingsComponent> {
   canDeactivate(target: SettingsComponent) {
     if (target.hasPendingChanges) {
-      return window.confirm('You change pending changes. Are you sure you want to exit?');
+      return globalThis.confirm('You change pending changes. Are you sure you want to exit?');
     }
     return true;
   }

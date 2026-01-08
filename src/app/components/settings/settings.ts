@@ -1,4 +1,4 @@
-import { Component, computed, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { UserService } from '../../services/userService';
 import { take } from 'rxjs';
 import { AuthService } from '../../services/authService';
@@ -60,7 +60,7 @@ export class SettingsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    var id = this.authService.getUserId();
+    const id = this.authService.getUserId();
     if (!id) {
       this.alertService.addAlert('error', 'Error getting data.');
       return;
