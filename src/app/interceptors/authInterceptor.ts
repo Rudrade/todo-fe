@@ -2,7 +2,6 @@ import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/c
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AuthService } from '../services/authService';
-import { jwtDecode } from 'jwt-decode';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -13,7 +12,8 @@ export class AuthInterceptor implements HttpInterceptor {
     if (
       req.url.includes('/register') ||
       req.url.includes('activate') ||
-      req.url.includes('/auth/refresh')
+      req.url.includes('/auth/refresh') ||
+      req.url.includes('reset-password')
     ) {
       return next.handle(req);
     }

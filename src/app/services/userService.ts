@@ -73,6 +73,16 @@ export class UserService {
   deleteUserRequest(id: string) {
     return this.httpClient.delete(`${this.baseUsersUrl}/requests/${id}`);
   }
+
+  resetPassword(body: Partial<{ username: string; email: string }>) {
+    return this.httpClient.post(`${this.baseUsersUrl}/reset-password`, body);
+  }
+
+  setNewPassword(password: string, id: string) {
+    return this.httpClient.patch(`${this.baseUsersUrl}/reset-password/${id}`, {
+      password,
+    });
+  }
 }
 
 interface UsersResonse {
