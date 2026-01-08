@@ -123,7 +123,12 @@
         </li>
         }
         <li class="d-flex flex-row">
-          <a href="#" class="icon-link icon-link-hover">
+          <a
+            class="icon-link icon-link-hover"
+            [routerLink]="['/settings']"
+            [routerLinkActive]="'active'"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
             <i class="bi bi-gear me-3 align-middle"></i>
             Settings
           </a>
