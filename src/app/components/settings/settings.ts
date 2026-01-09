@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { UserService } from '../../services/userService';
 import { take } from 'rxjs';
 import { AuthService } from '../../services/authService';
@@ -25,6 +25,8 @@ export class SettingsComponent implements OnInit {
   private readonly alertService = inject(AlertService);
   private readonly formBuilder = inject(FormBuilder);
 
+  submitting = signal<boolean>(false);
+
   form = this.formBuilder.group(
     {
       username: this.formBuilder.control('', {
@@ -49,7 +51,7 @@ export class SettingsComponent implements OnInit {
     { validators: [this.newPasswordsMatchValidator()] }
   );
 
-  private data: User | undefined = undefined;
+  data: User | undefined = undefined;
   get hasPendingChanges() {
     return (
       (this.form.controls.username.touched &&
@@ -57,6 +59,12 @@ export class SettingsComponent implements OnInit {
       (this.form.controls.email.touched && this.data?.email !== this.form.controls.email.value) ||
       (this.form.controls.password.touched && this.form.controls.password.value !== '')
     );
+  }
+
+  selectedImage: File | undefined = undefined;
+
+  onSelectImage(event: any) {
+    this.selectedImage = event.target.files[0];
   }
 
   ngOnInit(): void {
@@ -95,17 +103,37 @@ export class SettingsComponent implements OnInit {
   onSubmit() {
     if (!this.form.valid) return;
 
-    const payload = {
-      id: this.data!.id,
-      ...this.form.getRawValue(),
-    };
+    this.submitting.set(true);
 
     this.userService
-      .updateUser(payload)
+      .updateUser(this.constructPayload(), this.data?.id || '')
       .pipe(take(1))
       .subscribe({
-        next: () => this.alertService.addAlert('success', 'Changes succefully'),
-        error: (err) => this.alertService.addErrorAlert(err),
+        next: (res) => {
+          this.authService.setImageUrl(res.imageUrl);
+          if (this.data) this.data.imageUrl = res.imageUrl;
+          this.alertService.addAlert('success', 'Changes succefully');
+          this.submitting.set(false);
+        },
+        error: (err) => {
+          this.alertService.addErrorAlert(err);
+          this.submitting.set(false);
+        },
       });
+  }
+
+  constructPayload() {
+    const rawData = this.form.getRawValue();
+
+    const data = new FormData();
+    data.append('username', rawData.username);
+    data.append('email', rawData.email);
+    data.append('oldPassword', rawData.oldPassword);
+    data.append('password', rawData.password);
+    if (this.selectedImage) {
+      data.append('image', this.selectedImage);
+    }
+
+    return data;
   }
 }

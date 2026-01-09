@@ -106,9 +106,16 @@
   </div>
 
   <!-- Extra options -->
-  <div class="row align-self-start my-3">
-    <div class="container ms-4">
-      <ul>
+  <div class="d-flex align-self-start align-items-center">
+    <div class="avatar me-3">
+      @if (userImageUrl()) {
+      <img id="setting-avatar" [src]="userImageUrl()" alt="" />
+      } @else {
+      <img class="avatar" src="missing-avatar.webp" alt="" />
+      }
+    </div>
+    <div class="container ms-0 ps-0">
+      <ul class="ps-0">
         @if (isAdmin) {
         <li class="d-flex flex-row">
           <a

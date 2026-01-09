@@ -7,4 +7,5 @@ export interface User {
   mailSent: boolean | undefined;
   dtCreated: Date | undefined;
   isRequest: boolean;
+  imageUrl: string | undefined;
 }

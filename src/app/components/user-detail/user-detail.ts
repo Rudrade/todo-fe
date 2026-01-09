@@ -6,6 +6,7 @@ import { UserService } from '../../services/userService';
 import { User } from '../../models/user';
 import { take } from 'rxjs';
 import { translateErrorMessage } from '../../shared/util/appUtil';
+import { AuthService } from '../../services/authService';
 
 @Component({
   selector: 'app-user-detail',
@@ -17,6 +18,7 @@ import { translateErrorMessage } from '../../shared/util/appUtil';
 export class UserDetailComponent {
   private readonly userService = inject(UserService);
   private readonly alertService = inject(AlertService);
+  private readonly authService = inject(AuthService);
 
   data = input<User | undefined>();
   close = output<void>();
@@ -38,6 +40,13 @@ export class UserDetailComponent {
     }),
   });
 
+  image = signal<string>('');
+  selectedImage: File | undefined = undefined;
+
+  onSelectImage(event: any) {
+    this.selectedImage = event.target.files[0];
+  }
+
   constructor() {
     effect(() => {
       const user = this.data();
@@ -55,6 +64,8 @@ export class UserDetailComponent {
         } else {
           this.form.enable({ emitEvent: false });
         }
+
+        if (user.imageUrl) this.image.set(user.imageUrl);
       }
     });
   }
@@ -69,16 +80,42 @@ export class UserDetailComponent {
       return;
     }
 
+    if (this.selectedImage) {
+      if (!this.selectedImage.name.endsWith('.webp')) {
+        this.alertService.addAlert('error', 'Image must be a .webp');
+        return;
+      }
+
+      if (this.selectedImage.size > 1572864) {
+        this.alertService.addAlert('error', 'Image must be a maxiumn size of 1.5MB');
+        return;
+      }
+    }
+
     this.submitting.set(true);
-    const payload = {
-      id: this.data()!.id,
-      ...this.form.getRawValue(),
-    };
+
+    const rawData = this.form.getRawValue();
+
+    const payload = new FormData();
+    payload.append('username', rawData.username);
+    payload.append('email', rawData.email);
+    payload.append('role', rawData.role);
+    if (this.selectedImage) {
+      payload.append('image', this.selectedImage);
+    }
+
+    const id = this.data()!.id;
+
     this.userService
-      .updateUser(payload)
+      .updateUser(payload, id)
       .pipe(take(1))
       .subscribe({
-        next: () => {
+        next: (res) => {
+          this.image.set(res.imageUrl);
+          if (this.authService.getUserId() === id) {
+            this.authService.setImageUrl(res.imageUrl);
+          }
+
           this.alertService.addAlert('success', 'User updated');
           this.refreshUsers.emit();
         },

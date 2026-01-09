@@ -45,6 +45,7 @@ export class LoginComponent implements OnInit {
           .pipe(take(1))
           .subscribe({
             next: (resp) => {
+              this.authService.setImageUrl(resp.imageUrl);
               this.authService.setToken(resp.token);
               this.router.navigate(['/']);
               this.submitting.set(false);

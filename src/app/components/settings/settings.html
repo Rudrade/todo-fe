@@ -2,6 +2,22 @@
 
 <form (ngSubmit)="onSubmit()" [formGroup]="form">
   <div class="form-floating mb-3">
+    @if (data?.imageUrl) {
+    <img class="avatar" [src]="data?.imageUrl" alt="avatar" />
+    } @else {
+    <img class="avatar" src="missing-avatar.webp" alt="avatar" />
+    }
+    <input
+      type="file"
+      id="user-avatar"
+      accept="image/webp"
+      class="ms-3"
+      (change)="onSelectImage($event)"
+      name="image"
+    />
+  </div>
+
+  <div class="form-floating mb-3">
     <input
       id="in-settings-username"
       type="text"
@@ -69,6 +85,13 @@
   </div>
 
   <div class="form-floating mb-3">
-    <button type="submit" class="btn btn-warning" [disabled]="!form.valid">Save changes</button>
+    <button type="submit" class="btn btn-warning" [disabled]="form.invalid || submitting()">
+      Save changes
+    </button>
+    @if(submitting()) {
+    <div class="d-flex justify-content-center">
+      <div class="spinner-border" role="status"></div>
+    </div>
+    }
   </div>
 </form>

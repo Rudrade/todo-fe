@@ -3,6 +3,22 @@
     <h2 class="mb-3">User {{ data()?.isRequest ? 'Request' : 'Detail' }}</h2>
     <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="form-floating mb-3">
+        @if (image()) {
+        <img class="avatar" [src]="image()" alt="avatar" />
+        } @else {
+        <img class="avatar" src="missing-avatar.webp" alt="avatar" />
+        }
+        <input
+          type="file"
+          id="user-avatar"
+          accept="image/webp"
+          class="ms-3"
+          (change)="onSelectImage($event)"
+          name="image"
+        />
+      </div>
+
+      <div class="form-floating mb-3">
         <input type="text" class="form-control" placeholder="Username" formControlName="username" />
         <label for="input-username">Username *</label>
         @if (form.controls.username.invalid && form.controls.username.touched) {
