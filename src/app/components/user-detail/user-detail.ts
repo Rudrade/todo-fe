@@ -139,13 +139,14 @@ export class UserDetailComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
+          this.submitting.set(false);
           this.alertService.addAlert('success', `User ${status ? 'activated' : 'deactivated'}`);
           this.refreshUsers.emit();
           this.close.emit();
         },
-        error: (error) => this.alertService.addAlert('error', translateErrorMessage(error)),
-        complete: () => {
+        error: (error) => {
           this.submitting.set(false);
+          this.alertService.addErrorAlert(error);
         },
       });
   }

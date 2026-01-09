@@ -48,9 +48,10 @@ export class UserService {
   }
 
   changeUserStatus(id: string, active: boolean) {
-    return this.httpClient.patch(`${this.baseUsersUrl}/${id}`, {
-      active,
-    });
+    const payload = new FormData();
+    payload.append('active', `${active}`);
+
+    return this.httpClient.patch(`${this.baseUsersUrl}/${id}`, payload);
   }
 
   activateUser(id: string) {
