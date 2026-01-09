@@ -12,6 +12,8 @@ export function translateErrorMessage(resp: HttpErrorResponse): string {
     return message;
   } else if (resp.status === 403) {
     return 'Invalid Access';
+  } else if (resp.status === 415) {
+    return 'Unsupported Media Type';
   }
 
   return resp.error.message || 'Unkown error';

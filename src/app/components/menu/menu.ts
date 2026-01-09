@@ -23,6 +23,7 @@ export class MenuComponent implements OnInit, OnDestroy {
   userTags = this.tagsService.userTags;
   hideSearch = false;
   isAdmin = false;
+  readonly userImageUrl = this.authService.imageUrl;
 
   ngOnInit(): void {
     this.isAdmin = this.authService.isAdminUser();

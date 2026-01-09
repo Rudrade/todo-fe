@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
@@ -16,6 +16,14 @@ export class AuthService {
   private readonly httpClient = inject(HttpClient);
   private readonly router = inject(Router);
   private readonly alertService = inject(AlertService);
+
+  private readonly sImageUrl = signal<string>('');
+  readonly imageUrl = this.sImageUrl.asReadonly();
+
+  setImageUrl(imageUrl: string) {
+    console.log('imageUrl:', imageUrl);
+    this.sImageUrl.set(imageUrl);
+  }
 
   getAuthToken() {
     // Get cookie
@@ -112,4 +120,5 @@ export class AuthService {
 
 interface AuthResponse {
   token: string;
+  imageUrl: string;
 }

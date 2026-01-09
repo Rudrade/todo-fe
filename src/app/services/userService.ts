@@ -43,14 +43,15 @@ export class UserService {
     return this.httpClient.get<User>(`${this.baseUsersUrl}/${id}`);
   }
 
-  updateUser(user: Partial<UpdateUser> & { id: string }) {
-    return this.httpClient.patch<UpdateUser>(`${this.baseUsersUrl}/${user.id}`, user);
+  updateUser(user: FormData, id: string) {
+    return this.httpClient.patch<UpdateUser>(`${this.baseUsersUrl}/${id}`, user);
   }
 
   changeUserStatus(id: string, active: boolean) {
-    return this.httpClient.patch(`${this.baseUsersUrl}/${id}`, {
-      active,
-    });
+    const payload = new FormData();
+    payload.append('active', `${active}`);
+
+    return this.httpClient.patch(`${this.baseUsersUrl}/${id}`, payload);
   }
 
   activateUser(id: string) {
@@ -97,4 +98,5 @@ interface UpdateUser {
   role: 'ROLE_USER' | 'ROLE_ADMIN';
   active: boolean;
   oldPassword: string;
+  imageUrl: string;
 }
