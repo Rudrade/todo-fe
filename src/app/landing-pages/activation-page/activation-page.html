@@ -1,10 +1,12 @@
 <div class="activation-container">
   @if (loading()) {
-  <p>Activating your account...</p>
+  <p>{{ 'activation.activating' | translate }}</p>
   } @if (!loading()) { @if (success()) {
-  <p>Congratulations on activating your account!</p>
+  <p>{{ 'activation.success' | translate }}</p>
   } @else {
-  <p>An error occured while activating your account.</p>
+  <p>{{ 'activation.error' | translate }}</p>
   } }
-  <button type="button" class="btn btn-primary" [routerLink]="'/login'">Go to login page</button>
+  <button type="button" class="btn btn-primary" [routerLink]="'/login'">
+    {{ 'activation.go-login' | translate }}
+  </button>
 </div>

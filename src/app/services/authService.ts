@@ -81,7 +81,7 @@ export class AuthService {
     if (!authToken) return '';
 
     try {
-      const decodedToken = jwtDecode(authToken) as { role: string };
+      const decodedToken = jwtDecode<{ role: string }>(authToken);
       return decodedToken.role;
     } catch (error) {
       console.warn('Unable to decode token for roles', error);
@@ -92,11 +92,10 @@ export class AuthService {
 
   private isTokenValid(authToken: string) {
     const decodedToken = jwtDecode(authToken);
-    if (!decodedToken || !decodedToken.exp) return false;
+    if (!decodedToken?.exp) return false;
 
-    const now = new Date().getTime();
     const exp = decodedToken.exp * 1000 - 60000; // exp date - 60s
-    const valid = exp > now;
+    const valid = exp > Date.now();
     return valid;
   }
 

@@ -1,10 +1,15 @@
 <nav class="navbar navbar-nav navbar-expand-lg">
   <!--Header and Search -->
   <div class="row align-self-start">
-    <h3 class="navbar-text">Menu</h3>
+    <h3 class="navbar-text">{{ 'menu.title' | translate }}</h3>
     @if (!hideSearch) {
     <form class="d-flex">
-      <input class="form-control" type="search" placeholder="Search" #searchInput />
+      <input
+        class="form-control"
+        type="search"
+        placeholder="{{ 'menu.search-placeholder' | translate }}"
+        #searchInput
+      />
       <button
         class="btn btn-secondary"
         (click)="onSearchTasks(searchInput.value, 'search')"
@@ -18,7 +23,7 @@
 
   <!-- Main Menu -->
   <div class="row align-self-start my-3">
-    <h6 class="navbar-text">Tasks</h6>
+    <h6 class="navbar-text">{{ 'menu.tasks' | translate }}</h6>
     <div class="container ms-4">
       <ul>
         <li class="d-flex flex-row">
@@ -29,7 +34,7 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <i class="bi bi-clipboard me-3 align-middle"></i>
-            All
+            {{ 'menu.all' | translate }}
           </a>
         </li>
         <li class="d-flex flex-row align-items-center">
@@ -40,7 +45,7 @@
             [routerLinkActive]="'active'"
           >
             <i class="bi bi-list-task me-3"></i>
-            Today
+            {{ 'menu.today' | translate }}
           </a>
         </li>
         <li class="d-flex flex-row align-items-center">
@@ -51,7 +56,7 @@
             [routerLinkActive]="'active'"
           >
             <i class="bi bi-chevron-double-right me-3"></i>
-            Upcoming
+            {{ 'menu.upcoming' | translate }}
           </a>
         </li>
         <li class="d-flex flex-row align-items-center">
@@ -61,7 +66,7 @@
             [routerLinkActive]="'active'"
           >
             <i class="bi bi-calendar3 me-3"></i>
-            Calendar
+            {{ 'menu.calendar' | translate }}
           </a>
         </li>
       </ul>
@@ -70,7 +75,7 @@
 
   <!-- Lists -->
   <div class="row align-self-start my-3">
-    <h6 class="navbar-text">Lists</h6>
+    <h6 class="navbar-text">{{ 'menu.lists' | translate }}</h6>
     <div class="container ms-4">
       <ul>
         @for (list of userLists(); track list) {
@@ -85,7 +90,7 @@
           <span class="count-badge">{{ list.count }}</span>
         </li>
         } @if (userLists().length === 0){
-        <small>No lists found</small>
+        <small>{{ 'menu.no-lists' | translate }}</small>
         }
       </ul>
     </div>
@@ -93,13 +98,13 @@
 
   <!-- Tags -->
   <div class="row align-self-start my-3">
-    <h6 class="navbar-text">Tags</h6>
+    <h6 class="navbar-text">{{ 'menu.tags' | translate }}</h6>
     <div class="container ms-4">
       <div class="tag-row">
         @for (tag of userTags(); track tag.name) {
         <app-tag [data]="tag" [removable]="false" (click)="onSearchTasks(tag.name, 'tag')" />
         } @if (userTags().length === 0){
-        <small>No tags found</small>
+        <small>{{ 'menu.no-tags' | translate }}</small>
         }
       </div>
     </div>
@@ -125,7 +130,7 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <i class="bi bi-people me-3 align-middle"></i>
-            Users
+            {{ 'menu.users' | translate }}
           </a>
         </li>
         }
@@ -137,13 +142,13 @@
             [routerLinkActiveOptions]="{ exact: true }"
           >
             <i class="bi bi-gear me-3 align-middle"></i>
-            Settings
+            {{ 'menu.settings' | translate }}
           </a>
         </li>
         <li class="d-flex flex-row">
           <a class="icon-link icon-link-hover" (click)="onLogout()">
             <i class="bi bi-box-arrow-right me-3 align-middle"></i>
-            Logout
+            {{ 'menu.logout' | translate }}
           </a>
         </li>
       </ul>

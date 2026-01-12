@@ -1,13 +1,13 @@
 <div class="register-card">
   <div class="d-flex flex-row" style="align-items: center">
-    <h2>Create account</h2>
+    <h2>{{ 'register.title' | translate }}</h2>
     <img src="logo.png" class="ms-5 mb-3" alt="" />
   </div>
-  <p class="text-muted">Fill in the details to create your account.</p>
+  <p class="text-muted">{{ 'register.description' | translate }}</p>
 
   <form [formGroup]="form" (ngSubmit)="onSubmit()" class="mt-3">
     <div class="mb-3">
-      <label class="form-label" for="username">Username</label>
+      <label class="form-label" for="username">{{ 'app.username' | translate }}</label>
       <input
         id="username"
         type="text"
@@ -16,12 +16,12 @@
         autocomplete="off"
       />
       @if (form.controls.username.touched && form.controls.username.invalid) {
-      <small class="text-danger">Username is required.</small>
+      <small class="text-danger">{{ 'register.username-required' | translate }}</small>
       }
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="email">Email</label>
+      <label class="form-label" for="email">{{ 'app.email' | translate }}</label>
       <input
         id="email"
         type="email"
@@ -30,14 +30,14 @@
         autocomplete="off"
       />
       @if (form.controls.email.touched && form.controls.email.hasError('required')) {
-      <small class="text-danger">Email is required.</small>
+      <small class="text-danger">{{ 'register.email-required' | translate }}</small>
       } @else if (form.controls.email.touched && form.controls.email.hasError('email')) {
-      <small class="text-danger">Enter a valid email.</small>
+      <small class="text-danger">{{ 'register.email-invalid' | translate }}</small>
       }
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="password">Password</label>
+      <label class="form-label" for="password">{{ 'app.password' | translate }}</label>
       <input
         id="password"
         type="password"
@@ -46,12 +46,14 @@
         autocomplete="off"
       />
       @if (form.controls.password.touched && form.controls.password.invalid) {
-      <small class="text-danger">Password is required.</small>
+      <small class="text-danger">{{ 'register.password-required' | translate }}</small>
       }
     </div>
 
     <div class="mb-3">
-      <label class="form-label" for="confirmPassword">Confirm password</label>
+      <label class="form-label" for="confirmPassword">
+        {{ 'register.confirm-password' | translate }}
+      </label>
       <input
         id="confirmPassword"
         type="password"
@@ -60,25 +62,27 @@
         autocomplete="off"
       />
       @if (form.controls.confirmPassword.touched && form.hasError('passwordsMismatch')) {
-      <small class="text-danger">Passwords must match.</small>
+      <small class="text-danger">{{ 'register.passwords-mismatch' | translate }}</small>
       } @else if (form.controls.confirmPassword.touched &&
       form.controls.confirmPassword.hasError('required')) {
-      <small class="text-danger">Please confirm your password.</small>
+      <small class="text-danger">{{ 'register.confirm-password-required' | translate }}</small>
       }
     </div>
 
-    <button class="btn btn-primary" type="submit" [disabled]="submitting()">Register</button>
+    <button class="btn btn-primary" type="submit" [disabled]="submitting()">
+      {{ 'register.submit' | translate }}
+    </button>
     <button
       class="btn btn-link ms-2"
       [routerLink]="'/login'"
       type="button"
       [disabled]="submitting()"
     >
-      Back to login
+      {{ 'register.back-to-login' | translate }}
     </button>
     @if(submitting()) {
     <div class="d-flex justify-content-center">
-      <div class="spinner-border" role="status"></div>
+      <div class="spinner-border" output="status"></div>
     </div>
     }
   </form>

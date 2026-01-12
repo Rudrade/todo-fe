@@ -2,16 +2,17 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { take } from 'rxjs';
 import { UserService } from '../../services/userService';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-activation-page',
   templateUrl: './activation-page.html',
   styleUrl: './activation-page.css',
-  imports: [RouterLink],
+  imports: [RouterLink, TranslatePipe],
 })
 export class ActivationPage implements OnInit {
-  private route = inject(ActivatedRoute);
-  private userService = inject(UserService);
+  private readonly route = inject(ActivatedRoute);
+  private readonly userService = inject(UserService);
 
   loading = signal<boolean>(true);
   success = signal<boolean>(false);

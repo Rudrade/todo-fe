@@ -6,11 +6,12 @@ import { Router, RouterModule } from '@angular/router';
 import { take } from 'rxjs';
 import { AlertService } from '../../services/alertService';
 import { AlertComponent } from '../../shared/alert/alert';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterModule, TranslatePipe],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
@@ -49,6 +50,7 @@ export class LoginComponent implements OnInit {
               this.authService.setToken(resp.token);
               this.router.navigate(['/']);
               this.submitting.set(false);
+              // TODO: Define user predifined language
             },
             error: () => {
               this.submitting.set(false);

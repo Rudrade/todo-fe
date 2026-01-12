@@ -7,11 +7,12 @@ import { User } from '../../models/user';
 import { take } from 'rxjs';
 import { translateErrorMessage } from '../../shared/util/appUtil';
 import { AuthService } from '../../services/authService';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-user-detail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, TranslatePipe],
   templateUrl: './user-detail.html',
   styleUrls: ['./user-detail.css'],
 })
@@ -19,9 +20,10 @@ export class UserDetailComponent {
   private readonly userService = inject(UserService);
   private readonly alertService = inject(AlertService);
   private readonly authService = inject(AuthService);
+  private readonly translate = inject(TranslateService);
 
   data = input<User | undefined>();
-  close = output<void>();
+  closeUser = output<void>();
   refreshUsers = output<void>();
 
   submitting = signal<boolean>(false);
@@ -71,7 +73,7 @@ export class UserDetailComponent {
   }
 
   onClose() {
-    this.close.emit();
+    this.closeUser.emit();
   }
 
   onSubmit() {
@@ -82,12 +84,12 @@ export class UserDetailComponent {
 
     if (this.selectedImage) {
       if (!this.selectedImage.name.endsWith('.webp')) {
-        this.alertService.addAlert('error', 'Image must be a .webp');
+        this.alertService.addAlert('error', this.translate.instant('user-detail.image-webp'));
         return;
       }
 
       if (this.selectedImage.size > 1572864) {
-        this.alertService.addAlert('error', 'Image must be a maxiumn size of 1.5MB');
+        this.alertService.addAlert('error', this.translate.instant('user-detail.image-size'));
         return;
       }
     }
@@ -116,7 +118,7 @@ export class UserDetailComponent {
             this.authService.setImageUrl(res.imageUrl);
           }
 
-          this.alertService.addAlert('success', 'User updated');
+          this.alertService.addAlert('success', this.translate.instant('user-detail.updated'));
           this.refreshUsers.emit();
         },
         error: (error) => {
@@ -140,9 +142,14 @@ export class UserDetailComponent {
       .subscribe({
         next: () => {
           this.submitting.set(false);
-          this.alertService.addAlert('success', `User ${status ? 'activated' : 'deactivated'}`);
+          this.alertService.addAlert(
+            'success',
+            status
+              ? this.translate.instant('user-detail.activated')
+              : this.translate.instant('user-detail.deactivated')
+          );
           this.refreshUsers.emit();
-          this.close.emit();
+          this.closeUser.emit();
         },
         error: (error) => {
           this.submitting.set(false);
@@ -164,7 +171,10 @@ export class UserDetailComponent {
         next: () => {
           this.mailSent.set(true);
           this.refreshUsers.emit();
-          this.alertService.addAlert('success', 'Mail sent successfully');
+          this.alertService.addAlert(
+            'success',
+            this.translate.instant('user-detail.mail-sent-success')
+          );
           this.sendingMail.set(false);
         },
         error: (res) => {
@@ -178,7 +188,7 @@ export class UserDetailComponent {
     const id = this.data()?.id;
     if (!id) return;
 
-    if (!confirm('Are you sure you want to delete this request?')) {
+    if (!confirm(this.translate.instant('user-detail.delete-confirm'))) {
       return;
     }
 
@@ -187,7 +197,10 @@ export class UserDetailComponent {
       .pipe(take(1))
       .subscribe({
         next: () => {
-          this.alertService.addAlert('success', 'User request deleted.');
+          this.alertService.addAlert(
+            'success',
+            this.translate.instant('user-detail.request-deleted')
+          );
           this.onClose();
           this.refreshUsers.emit();
         },

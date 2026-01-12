@@ -16,6 +16,7 @@ import { AlertComponent } from '../../shared/alert/alert';
 import { AlertService } from '../../services/alertService';
 import { AuthService } from '../../services/authService';
 import { UserService } from '../../services/userService';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 type RegisterForm = FormGroup<{
   username: FormControl<string>;
@@ -27,7 +28,7 @@ type RegisterForm = FormGroup<{
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterModule, TranslatePipe],
   templateUrl: './register.html',
   styleUrls: ['./register.css'],
 })
@@ -37,6 +38,7 @@ export class RegisterComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly router = inject(Router);
   private readonly fb = inject(FormBuilder);
+  private readonly translate = inject(TranslateService);
 
   alerts = this.alertService.allAlerts;
   error = signal<string | null>(null);
@@ -82,7 +84,7 @@ export class RegisterComponent implements OnInit {
           console.log('[Next]', nxt);
           this.alertService.addAlert(
             'success',
-            'Register completed. Please check your email for confirmation.'
+            this.translate.instant('register.success')
           );
           this.router.navigate(['/login']);
           this.submitting.set(false);

@@ -12,18 +12,20 @@ import {
   Validators,
 } from '@angular/forms';
 import { User } from '../../models/user';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.html',
   styleUrl: './settings.css',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
 })
 export class SettingsComponent implements OnInit {
   private readonly userService = inject(UserService);
   private readonly authService = inject(AuthService);
   private readonly alertService = inject(AlertService);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly translate = inject(TranslateService);
 
   submitting = signal<boolean>(false);
 
@@ -70,7 +72,7 @@ export class SettingsComponent implements OnInit {
   ngOnInit(): void {
     const id = this.authService.getUserId();
     if (!id) {
-      this.alertService.addAlert('error', 'Error getting data.');
+      this.alertService.addAlert('error', this.translate.instant('settings.error-loading'));
       return;
     }
 
@@ -112,7 +114,7 @@ export class SettingsComponent implements OnInit {
         next: (res) => {
           this.authService.setImageUrl(res.imageUrl);
           if (this.data) this.data.imageUrl = res.imageUrl;
-          this.alertService.addAlert('success', 'Changes succefully');
+          this.alertService.addAlert('success', this.translate.instant('settings.success'));
           this.submitting.set(false);
         },
         error: (err) => {

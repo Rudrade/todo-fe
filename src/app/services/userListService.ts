@@ -23,7 +23,6 @@ export class UserListService {
       .pipe(take(1))
       .subscribe({
         next: (resp) => this.lists.set(resp.lists),
-        complete: () => console.log('List fetched: ', this.lists()),
       });
   }
 

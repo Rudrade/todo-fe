@@ -1,11 +1,4 @@
-import {
-  Component,
-  inject,
-  input,
-  OnDestroy,
-  OnInit,
-  signal,
-} from '@angular/core';
+import { Component, inject, input, OnDestroy, OnInit, signal } from '@angular/core';
 import { Alert } from '../../models/alert';
 import { AlertService } from '../../services/alertService';
 
@@ -16,7 +9,7 @@ import { AlertService } from '../../services/alertService';
   styleUrl: './alert.css',
 })
 export class AlertComponent implements OnInit, OnDestroy {
-  private alertService = inject(AlertService);
+  private readonly alertService = inject(AlertService);
 
   data = input.required<Alert>();
   isClosing = signal(false);
@@ -28,15 +21,15 @@ export class AlertComponent implements OnInit, OnDestroy {
   private static readonly FADE_OUT_MS = 300;
 
   ngOnInit() {
-    this.autoCloseTimerId = window.setTimeout(
+    this.autoCloseTimerId = globalThis.setTimeout(
       () => this.startClose(),
       AlertComponent.AUTO_CLOSE_MS
     );
   }
 
   ngOnDestroy() {
-    window.clearTimeout(this.autoCloseTimerId);
-    window.clearTimeout(this.fadeTimerId);
+    globalThis.clearTimeout(this.autoCloseTimerId);
+    globalThis.clearTimeout(this.fadeTimerId);
   }
 
   onCloseAlert() {
@@ -56,7 +49,7 @@ export class AlertComponent implements OnInit, OnDestroy {
   private startClose() {
     if (this.isClosing()) return;
     this.isClosing.set(true);
-    this.fadeTimerId = window.setTimeout(() => {
+    this.fadeTimerId = globalThis.setTimeout(() => {
       this.alertService.closeAlert(this.data().id);
     }, AlertComponent.FADE_OUT_MS);
   }

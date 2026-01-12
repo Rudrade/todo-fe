@@ -11,10 +11,11 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { UserService } from '../../services/userService';
 import { take } from 'rxjs';
 import { translateErrorMessage } from '../../shared/util/appUtil';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-password-reset',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './password-reset-page.html',
   styleUrl: './password-reset-page.css',
 })

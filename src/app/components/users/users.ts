@@ -7,11 +7,12 @@ import { User } from '../../models/user';
 import { UserDetailComponent } from '../user-detail/user-detail';
 import { AlertService } from '../../services/alertService';
 import { translateErrorMessage } from '../../shared/util/appUtil';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, UserDetailComponent],
+  imports: [CommonModule, ReactiveFormsModule, UserDetailComponent, TranslatePipe],
   templateUrl: './users.html',
   styleUrls: ['./users.css'],
 })
@@ -101,7 +102,7 @@ export class UsersComponent implements OnInit {
       .pipe(take(1))
       .subscribe({
         next: (resp) => {
-          resp.requests.map((user) => (user.isRequest = true));
+          resp.requests.forEach((user) => (user.isRequest = true));
           this.users.set(resp.requests);
         },
         error: (res) => this.alertService.addAlert('error', translateErrorMessage(res)),

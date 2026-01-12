@@ -9,8 +9,8 @@ import { environment } from '../../environments/environment';
   providedIn: 'root',
 })
 export class TaskService {
-  private httpClient = inject(HttpClient);
-  private baseUrl = environment.apiUrl + 'task';
+  private readonly httpClient = inject(HttpClient);
+  private readonly baseUrl = environment.apiUrl + 'task';
   tasks = signal<Task[]>([]);
 
   fetchTasks(

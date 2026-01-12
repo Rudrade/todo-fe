@@ -7,26 +7,28 @@ import { Task } from '../../models/task';
 import { TaskComponent } from '../task/task';
 import { UserListService } from '../../services/userListService';
 import { TagsService } from '../../services/tagsService';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-task-list',
   templateUrl: './taskList.html',
   styleUrls: ['./taskList.css'],
-  imports: [TaskComponent],
+  imports: [TaskComponent, TranslatePipe],
 })
 export class TaskListComponent implements OnInit {
-  private taskService = inject(TaskService);
-  private destroyRef = inject(DestroyRef);
-  private route = inject(ActivatedRoute);
-  private alertService = inject(AlertService);
-  private userListService = inject(UserListService);
-  private tagService = inject(TagsService);
+  private readonly taskService = inject(TaskService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly route = inject(ActivatedRoute);
+  private readonly alertService = inject(AlertService);
+  private readonly userListService = inject(UserListService);
+  private readonly tagService = inject(TagsService);
+  private readonly translate = inject(TranslateService);
 
   private currentFilter = '';
   private currentSearchTerm = '';
 
   tasks = this.taskService.tasks;
-  taskCount = signal<Number | undefined>(undefined);
+  taskCount = signal<number | undefined>(undefined);
   isFetchingData = signal<boolean>(false);
   currentTask = signal<Task | undefined>(undefined);
 
@@ -69,7 +71,7 @@ export class TaskListComponent implements OnInit {
 
   onCompleteTask(id: string) {
     const subscription = this.taskService.removeTask(id).subscribe({
-      next: () => this.alertService.addAlert('success', 'Task completed'),
+      next: () => this.alertService.addAlert('success', this.translate.instant('task.completed')),
       complete: () => this.fetchTasks(this.currentFilter, this.currentSearchTerm),
       error: (error) => this.alertService.addAlert('error', error.message),
     });
@@ -98,18 +100,24 @@ export class TaskListComponent implements OnInit {
     this.currentTask.set(undefined);
   }
 
-  get filterName() {
+  get filterLabelKey() {
     if (this.currentFilter === 'upcoming') {
-      return 'Upcoming';
-    } else if (this.currentFilter === 'today') {
-      return 'Today';
-    } else if (this.currentFilter === 'search') {
-      return 'Search';
-    } else if (this.currentFilter === 'list') {
-      return this.currentSearchTerm;
-    } else {
-      return 'All';
+      return 'taskList.filter.upcoming';
     }
+    if (this.currentFilter === 'today') {
+      return 'taskList.filter.today';
+    }
+    if (this.currentFilter === 'search') {
+      return 'taskList.filter.search';
+    }
+    return 'taskList.filter.all';
+  }
+
+  get filterValue() {
+    if (this.currentFilter === 'list' || this.currentFilter === 'search') {
+      return this.currentSearchTerm;
+    }
+    return undefined;
   }
 
   listColor(listName: string) {
