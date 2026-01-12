@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { jwtDecode } from 'jwt-decode';
 import { AlertService } from './alertService';
 import { take } from 'rxjs';
+import { Language } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -120,5 +121,5 @@ export class AuthService {
 interface AuthResponse {
   token: string;
   imageUrl: string;
-  language: string;
+  language: Language;
 }

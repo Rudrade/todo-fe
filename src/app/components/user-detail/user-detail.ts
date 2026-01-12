@@ -3,7 +3,7 @@ import { Component, effect, inject, input, output, signal } from '@angular/core'
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AlertService } from '../../services/alertService';
 import { UserService } from '../../services/userService';
-import { User } from '../../models/user';
+import { Role, User } from '../../models/user';
 import { take } from 'rxjs';
 import { translateErrorMessage } from '../../shared/util/appUtil';
 import { AuthService } from '../../services/authService';
@@ -36,10 +36,11 @@ export class UserDetailComponent {
       nonNullable: true,
       validators: [Validators.required, Validators.email],
     }),
-    role: new FormControl<'ROLE_USER' | 'ROLE_ADMIN'>('ROLE_USER', {
+    role: new FormControl<Role>('ROLE_USER', {
       nonNullable: true,
       validators: [Validators.required],
     }),
+    language: new FormControl('', { nonNullable: true, validators: [Validators.required] }),
   });
 
   image = signal<string>('');
@@ -57,6 +58,7 @@ export class UserDetailComponent {
           username: user.username,
           email: user.email,
           role: user.role,
+          language: user.language,
         });
         this.mailSent.set(!!user.mailSent);
 
@@ -102,6 +104,7 @@ export class UserDetailComponent {
     payload.append('username', rawData.username);
     payload.append('email', rawData.email);
     payload.append('role', rawData.role);
+    payload.append('language', rawData.language);
     if (this.selectedImage) {
       payload.append('image', this.selectedImage);
     }

@@ -86,6 +86,37 @@
     }
   </div>
 
+  <div class="mb-3">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="language"
+        formControlName="language"
+        id="input-language1"
+        value="EN"
+      />
+      <label for="input-language1" class="form-check-label">
+        <span class="fi fi-gb"></span>
+        English
+      </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="language"
+        formControlName="language"
+        id="input-language2"
+        value="PT"
+      />
+      <label for="input-language2" class="form-check-label">
+        <span class="fi fi-pt"></span>
+        Português
+      </label>
+    </div>
+  </div>
+
   <div class="form-floating mb-3">
     <button type="submit" class="btn btn-warning" [disabled]="form.invalid || submitting()">
       {{ 'settings.save-changes' | translate }}

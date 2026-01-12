@@ -47,7 +47,7 @@ export class LoginComponent implements OnInit {
           .pipe(take(1))
           .subscribe({
             next: (resp) => {
-              this.translate.use(resp.language.toLowerCase());
+              this.translate.use(resp.language);
               this.authService.setImageUrl(resp.imageUrl);
               this.authService.setToken(resp.token);
               this.router.navigate(['/']);

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { User } from '../models/user';
+import { Language, Role, User } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -25,17 +25,13 @@ export class UserService {
     return this.httpClient.get<UsersResonse>(this.baseUsersUrl, { params });
   }
 
-  registerUser(
-    username: string,
-    email: string,
-    password: string,
-    role: 'ROLE_ADMIN' | 'ROLE_USER'
-  ) {
+  registerUser(username: string, email: string, password: string, role: Role, language: Language) {
     return this.httpClient.post(this.baseUsersUrl + '/register', {
       username,
       email,
       password,
       role,
+      language,
     });
   }
 
@@ -55,7 +51,7 @@ export class UserService {
   }
 
   activateUser(id: string) {
-    return this.httpClient.post(`${this.baseUsersUrl}/activate/${id}`, {});
+    return this.httpClient.post<{ language: Language }>(`${this.baseUsersUrl}/activate/${id}`, {});
   }
 
   fetchRequests(filterField: 'USERNAME' | 'EMAIL', filterValue: string) {
@@ -95,8 +91,9 @@ interface UpdateUser {
   username: string;
   password: string;
   email: string;
-  role: 'ROLE_USER' | 'ROLE_ADMIN';
+  role: Role;
   active: boolean;
   oldPassword: string;
   imageUrl: string;
+  language: Language;
 }

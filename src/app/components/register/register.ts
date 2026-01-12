@@ -17,12 +17,14 @@ import { AlertService } from '../../services/alertService';
 import { AuthService } from '../../services/authService';
 import { UserService } from '../../services/userService';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { Language } from '../../models/user';
 
 type RegisterForm = FormGroup<{
   username: FormControl<string>;
   email: FormControl<string>;
   password: FormControl<string>;
   confirmPassword: FormControl<string>;
+  language: FormControl<Language>;
 }>;
 
 @Component({
@@ -56,6 +58,7 @@ export class RegisterComponent implements OnInit {
         nonNullable: true,
         validators: [Validators.required],
       }),
+      language: this.fb.control('', { nonNullable: true, validators: [Validators.required] }),
     },
     { validators: [this.passwordsMatchValidator()] }
   );
@@ -75,17 +78,14 @@ export class RegisterComponent implements OnInit {
 
     this.submitting.set(true);
 
-    const { username, email, password } = this.form.getRawValue();
+    const { username, email, password, language } = this.form.getRawValue();
     this.userService
-      .registerUser(username, email, password, 'ROLE_USER')
+      .registerUser(username, email, password, 'ROLE_USER', language)
       .pipe(take(1))
       .subscribe({
         next: (nxt) => {
           console.log('[Next]', nxt);
-          this.alertService.addAlert(
-            'success',
-            this.translate.instant('register.success')
-          );
+          this.alertService.addAlert('success', this.translate.instant('register.success'));
           this.router.navigate(['/login']);
           this.submitting.set(false);
         },
@@ -105,5 +105,9 @@ export class RegisterComponent implements OnInit {
       }
       return null;
     };
+  }
+
+  onChangeLanguage(language: Language) {
+    this.translate.use(language);
   }
 }

@@ -2,7 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { take } from 'rxjs';
 import { UserService } from '../../services/userService';
-import { TranslatePipe } from '@ngx-translate/core';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-activation-page',
@@ -13,6 +13,7 @@ import { TranslatePipe } from '@ngx-translate/core';
 export class ActivationPage implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly userService = inject(UserService);
+  private readonly translate = inject(TranslateService);
 
   loading = signal<boolean>(true);
   success = signal<boolean>(false);
@@ -31,15 +32,16 @@ export class ActivationPage implements OnInit {
       .activateUser(id)
       .pipe(take(1))
       .subscribe({
-        next: () => {
+        next: (res) => {
+          if (res.language) {
+            this.translate.use(res.language);
+          }
           this.success.set(true);
+          this.loading.set(false);
         },
         error: () => {
           this.loading.set(false);
           this.success.set(false);
-        },
-        complete: () => {
-          this.loading.set(false);
         },
       });
   }

@@ -69,17 +69,52 @@
       }
     </div>
 
-    <button class="btn btn-primary" type="submit" [disabled]="submitting()">
-      {{ 'register.submit' | translate }}
-    </button>
-    <button
-      class="btn btn-link ms-2"
-      [routerLink]="'/login'"
-      type="button"
-      [disabled]="submitting()"
-    >
-      {{ 'register.back-to-login' | translate }}
-    </button>
+    <div class="mb-3">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="language"
+          formControlName="language"
+          id="input-language1"
+          value="EN"
+          (click)="onChangeLanguage('EN')"
+        />
+        <label for="input-language1" class="form-check-label">
+          <span class="fi fi-gb"></span>
+          English
+        </label>
+      </div>
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="radio"
+          name="language"
+          formControlName="language"
+          id="input-language2"
+          value="PT"
+          (click)="onChangeLanguage('PT')"
+        />
+        <label for="input-language2" class="form-check-label">
+          <span class="fi fi-pt"></span>
+          Português
+        </label>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between">
+      <button class="btn btn-primary" type="submit" [disabled]="submitting()">
+        {{ 'register.submit' | translate }}
+      </button>
+      <button
+        class="btn btn-link ms-2"
+        [routerLink]="'/login'"
+        type="button"
+        [disabled]="submitting()"
+      >
+        {{ 'register.back-to-login' | translate }}
+      </button>
+    </div>
     @if(submitting()) {
     <div class="d-flex justify-content-center">
       <div class="spinner-border" output="status"></div>
