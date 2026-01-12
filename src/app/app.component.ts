@@ -14,6 +14,12 @@ export class App {
   constructor() {
     this.translate.addLangs(['pt', 'en']);
     this.translate.setFallbackLang('en');
-    this.translate.use('en'); // TODO: Fetch locale
+    this.translate.use(this.fetchBrowserLanguage());
+  }
+
+  private fetchBrowserLanguage() {
+    if (navigator.language.includes('pt')) return 'pt';
+
+    return 'en';
   }
 }

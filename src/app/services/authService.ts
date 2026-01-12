@@ -120,4 +120,5 @@ export class AuthService {
 interface AuthResponse {
   token: string;
   imageUrl: string;
+  language: string;
 }

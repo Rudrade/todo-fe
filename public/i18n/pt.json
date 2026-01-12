@@ -20,7 +20,7 @@
     "required": "Este campo é obrigatório.",
     "valid-email": "Indique um email válido.",
     "passwords-mismatch": "As palavras-passe devem coincidir.",
-    "confirm-pending": "Alterou as alterações pendentes. Tem a certeza de que quer sair?"
+    "confirm-pending": "Tem alterações pendentes. Tem a certeza de que quer sair?"
   },
   "login": {
     "description": "Introduza as suas credenciais para continuar.",
