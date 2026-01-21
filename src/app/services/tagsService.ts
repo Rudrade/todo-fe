@@ -8,11 +8,11 @@ import { take } from 'rxjs';
   providedIn: 'root',
 })
 export class TagsService {
-  private tags = signal<Tag[]>([]);
+  private readonly tags = signal<Tag[]>([]);
   userTags = this.tags.asReadonly();
 
-  private httpClient = inject(HttpClient);
-  private baseUrl = environment.apiUrl + 'tag';
+  private readonly httpClient = inject(HttpClient);
+  private readonly baseUrl = environment.apiUrl + 'tag';
 
   constructor() {
     this.fetchTags();

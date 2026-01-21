@@ -5,12 +5,13 @@ import { TagsService } from '../../services/tagsService';
 import { TagComponent } from '../tag/tag';
 import { AuthService } from '../../services/authService';
 import { Subscription } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-menu',
   templateUrl: './menu.html',
   styleUrls: ['./menu.css'],
-  imports: [RouterLink, RouterLinkActive, TagComponent],
+  imports: [RouterLink, RouterLinkActive, TagComponent, TranslatePipe],
 })
 export class MenuComponent implements OnInit, OnDestroy {
   private readonly router = inject(Router);

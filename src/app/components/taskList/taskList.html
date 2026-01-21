@@ -1,5 +1,5 @@
 <div class="d-flex flex-row">
-  <h1 class="p-2">{{ filterName }}</h1>
+  <h1 class="p-2">{{ filterLabelKey | translate }} @if (filterValue) { {{ filterValue }} }</h1>
   <h1 class="p-2">{{ taskCount() }}</h1>
 </div>
 <div class="table-responsive">
@@ -9,14 +9,12 @@
         <td>
           <i class="bi bi-plus"></i>
         </td>
-        <td>Add new task</td>
+        <td>{{ 'taskList.add-new-task' | translate }}</td>
         <td></td>
       </tr>
       @if (isFetchingData()) {
       <div class="d-flex justify-content-center">
-        <div class="spinner-border" role="status">
-          <span class="visually-hidden">Loading...</span>
-        </div>
+        <div class="spinner-border" output="status"></div>
       </div>
       } @else { @for (task of tasks(); track task.id) {
       <tr (click)="onOpenTask(task)">
@@ -49,12 +47,14 @@
     </tbody>
     @if (!isFetchingData() && tasks().length === 0) {
     <caption>
-      No tasks found
+      {{
+        'taskList.no-tasks' | translate
+      }}
     </caption>
     }
   </table>
 </div>
 
 @if (currentTask()) {
-<app-task [data]="currentTask()" (close)="onCloseTask()" (refreshTasks)="refreshTasks()" />
+<app-task [data]="currentTask()" (closeTask)="onCloseTask()" (refreshTasks)="refreshTasks()" />
 }

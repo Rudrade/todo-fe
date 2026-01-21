@@ -10,15 +10,17 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { UserListService } from '../../services/userListService';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-search-select',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, TranslatePipe],
   templateUrl: './search-select.html',
   styleUrl: './search-select.css',
 })
 export class SearchSelectComponent implements OnChanges {
-  private userListService = inject(UserListService);
+  private readonly userListService = inject(UserListService);
+  private readonly translate = inject(TranslateService);
 
   options = input.required<string[]>();
   multiple = input<boolean>(false);
@@ -29,7 +31,7 @@ export class SearchSelectComponent implements OnChanges {
   createOption = output<string | null>();
 
   searchInput = new FormControl('');
-  private searchTerm = signal<string>('');
+  private readonly searchTerm = signal<string>('');
   showDropdown = false;
   selectedOptions = signal<string[]>([]);
   filteredOptions = computed(() => {
@@ -37,9 +39,7 @@ export class SearchSelectComponent implements OnChanges {
       const lowercaseTerm = this.searchTerm().toLowerCase();
       return this.options().filter((option) => option.toLowerCase().includes(lowercaseTerm));
     } else if (this.multiple()) {
-      return this.options().filter(
-        (option) => !this.selectedOptions().find((opt) => opt === option)
-      );
+      return this.options().filter((option) => !this.selectedOptions().includes(option));
     }
     return [...this.options()];
   });
@@ -101,6 +101,6 @@ export class SearchSelectComponent implements OnChanges {
 
   get createOptionText(): string {
     const searchTerm = this.searchInput.value?.trim();
-    return searchTerm ? `Create "${searchTerm}"` : '';
+    return searchTerm ? `${this.translate.instant('searchSelect.create')} "${searchTerm}"` : '';
   }
 }

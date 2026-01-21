@@ -13,13 +13,13 @@ export class AuthInterceptor implements HttpInterceptor {
       req.url.includes('/register') ||
       req.url.includes('activate') ||
       req.url.includes('/auth/refresh') ||
-      req.url.includes('reset-password')
+      req.url.includes('reset-password') ||
+      req.url.includes('i18n')
     ) {
       return next.handle(req);
     }
 
     const authToken = this.authService.getAuthToken();
-
     if (authToken) {
       req = req.clone({
         headers: req.headers.append('Authorization', 'Bearer ' + authToken),

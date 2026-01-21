@@ -11,16 +11,18 @@ import { RouterLink } from '@angular/router';
 import { UserService } from '../../services/userService';
 import { take } from 'rxjs';
 import { translateErrorMessage } from '../../shared/util/appUtil';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, TranslatePipe],
   templateUrl: './reset-password.html',
   styleUrl: './reset-password.css',
 })
 export class ResetPasswordComponent {
   private readonly formBuilder = inject(FormBuilder);
   private readonly userService = inject(UserService);
+  private readonly translate = inject(TranslateService);
 
   form = this.formBuilder.group(
     {
@@ -62,7 +64,7 @@ export class ResetPasswordComponent {
       .subscribe({
         next: () => {
           this.isError.set(false);
-          this.message.set("Please check the account's email for a reset link.");
+          this.message.set(this.translate.instant('reset.success'));
           this.submitting.set(false);
         },
         error: (err) => {

@@ -1,4 +1,4 @@
-<h2 class="mb-3">Settings</h2>
+<h2 class="mb-3">{{ 'settings.title' | translate }}</h2>
 
 <form (ngSubmit)="onSubmit()" [formGroup]="form">
   <div class="form-floating mb-3">
@@ -22,12 +22,12 @@
       id="in-settings-username"
       type="text"
       class="form-control"
-      placeholder="Username"
+      placeholder="{{ 'settings.username' | translate }}"
       formControlName="username"
     />
-    <label for="in-settings-username">Username</label>
+    <label for="in-settings-username">{{ 'settings.username' | translate }}</label>
     @if (form.controls.username.invalid && form.controls.username.touched) {
-    <small>This field is required!</small>
+    <small>{{ 'common.required' | translate }}</small>
     }
   </div>
 
@@ -36,12 +36,12 @@
       id="in-settings-email"
       type="email"
       class="form-control"
-      placeholder="Email"
+      placeholder="{{ 'settings.email' | translate }}"
       formControlName="email"
     />
-    <label for="in-settings-email">Email</label>
+    <label for="in-settings-email">{{ 'settings.email' | translate }}</label>
     @if (form.controls.email.invalid && form.controls.email.touched) {
-    <small>Provide a valid email.</small>
+    <small>{{ 'settings.valid-email' | translate }}</small>
     }
   </div>
 
@@ -50,12 +50,12 @@
       id="in-settings-password"
       type="password"
       class="form-control"
-      placeholder="Password"
+      placeholder="{{ 'settings.password' | translate }}"
       formControlName="oldPassword"
     />
-    <label for="in-settings-password">Password *</label>
+    <label for="in-settings-password">{{ 'settings.password' | translate }}</label>
     @if (form.controls.oldPassword.invalid && hasPendingChanges) {
-    <small>This field is required to update values.</small>
+    <small>{{ 'settings.required-to-update' | translate }}</small>
     }
   </div>
 
@@ -64,10 +64,10 @@
       id="in-settings-new-password"
       type="password"
       class="form-control"
-      placeholder="New password"
+      placeholder="{{ 'settings.new-password' | translate }}"
       formControlName="password"
     />
-    <label for="in-settings-new-password">New Password</label>
+    <label for="in-settings-new-password">{{ 'settings.new-password' | translate }}</label>
   </div>
 
   <div class="form-floating mb-3">
@@ -75,18 +75,51 @@
       id="in-settings-new-password-confirm"
       type="password"
       class="form-control"
-      placeholder="Confirm new password"
+      placeholder="{{ 'settings.confirm-new-password' | translate }}"
       formControlName="confirmNewPassword"
     />
-    <label for="in-settings-new-password-confirm">Confirm new password</label>
+    <label for="in-settings-new-password-confirm">
+      {{ 'settings.confirm-new-password' | translate }}
+    </label>
     @if (form.controls.password.touched && form.hasError('passwordsMismatch')) {
-    <small>Password must match</small>
+    <small>{{ 'settings.password-must-match' | translate }}</small>
     }
+  </div>
+
+  <div class="mb-3">
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="language"
+        formControlName="language"
+        id="input-language1"
+        value="EN"
+      />
+      <label for="input-language1" class="form-check-label">
+        <span class="fi fi-gb"></span>
+        English
+      </label>
+    </div>
+    <div class="form-check">
+      <input
+        class="form-check-input"
+        type="radio"
+        name="language"
+        formControlName="language"
+        id="input-language2"
+        value="PT"
+      />
+      <label for="input-language2" class="form-check-label">
+        <span class="fi fi-pt"></span>
+        Português
+      </label>
+    </div>
   </div>
 
   <div class="form-floating mb-3">
     <button type="submit" class="btn btn-warning" [disabled]="form.invalid || submitting()">
-      Save changes
+      {{ 'settings.save-changes' | translate }}
     </button>
     @if(submitting()) {
     <div class="d-flex justify-content-center">

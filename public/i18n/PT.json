@@ -1,0 +1,185 @@
+{
+  "app": {
+    "username": "Utilizador",
+    "password": "Palavra-passe",
+    "email": "Email"
+  },
+  "common": {
+    "search": "Pesquisar",
+    "clear": "Limpar",
+    "save-changes": "Guardar alterações",
+    "create": "Criar",
+    "close": "Fechar",
+    "back-home": "Voltar à página inicial",
+    "back-login": "Voltar ao login",
+    "today": "Hoje",
+    "yes": "Sim",
+    "no": "Não",
+    "active": "Ativo",
+    "inactive": "Inativo",
+    "required": "Este campo é obrigatório.",
+    "valid-email": "Indique um email válido.",
+    "passwords-mismatch": "As palavras-passe devem coincidir.",
+    "confirm-pending": "Tem alterações pendentes. Tem a certeza de que quer sair?"
+  },
+  "login": {
+    "description": "Introduza as suas credenciais para continuar.",
+    "login": "Conectar",
+    "register": "Registar",
+    "reset-password": "Redefinir palavra-passe",
+    "invalid": "Credenciais inválidas"
+  },
+  "register": {
+    "title": "Criar conta",
+    "description": "Preencha os dados para criar a sua conta.",
+    "username-required": "O nome de utilizador é obrigatório.",
+    "email-required": "O email é obrigatório.",
+    "email-invalid": "Introduza um email válido.",
+    "password-required": "A palavra-passe é obrigatória.",
+    "confirm-password": "Confirmar palavra-passe",
+    "confirm-password-required": "Por favor confirme a palavra-passe.",
+    "passwords-mismatch": "As palavras-passe devem coincidir.",
+    "submit": "Registar",
+    "back-to-login": "Voltar ao login",
+    "success": "Registo concluído. Verifique o seu email para confirmação."
+  },
+  "menu": {
+    "title": "Menu",
+    "search-placeholder": "Pesquisar",
+    "tasks": "Tarefas",
+    "all": "Todas",
+    "today": "Hoje",
+    "upcoming": "Próximas",
+    "calendar": "Calendário",
+    "lists": "Listas",
+    "no-lists": "Nenhuma lista encontrada",
+    "tags": "Etiquetas",
+    "no-tags": "Nenhuma etiqueta encontrada",
+    "users": "Utilizadores",
+    "settings": "Definições",
+    "logout": "Terminar sessão"
+  },
+  "taskList": {
+    "add-new-task": "Adicionar nova tarefa",
+    "no-tasks": "Nenhuma tarefa encontrada",
+    "filter": {
+      "all": "Todas",
+      "today": "Hoje",
+      "upcoming": "Próximas",
+      "search": "Pesquisa"
+    }
+  },
+  "task": {
+    "task": "Tarefa",
+    "title": "Título",
+    "title-required": "Este campo é obrigatório!",
+    "description": "Descrição",
+    "due-date": "Data limite",
+    "list": "Lista",
+    "tags": "Etiquetas",
+    "save-changes": "Guardar alterações",
+    "create": "Criar",
+    "close": "Fechar",
+    "created-success": "Tarefa criada com sucesso",
+    "completed": "Tarefa concluída"
+  },
+  "calendar": {
+    "today": "Hoje",
+    "weekday": {
+      "sun": "Dom",
+      "mon": "Seg",
+      "tue": "Ter",
+      "wed": "Qua",
+      "thu": "Qui",
+      "fri": "Sex",
+      "sat": "Sáb"
+    }
+  },
+  "settings": {
+    "title": "Definições",
+    "username": "Utilizador",
+    "email": "Email",
+    "password": "Palavra-passe *",
+    "new-password": "Nova palavra-passe",
+    "confirm-new-password": "Confirmar nova palavra-passe",
+    "required-to-update": "Este campo é obrigatório para atualizar valores.",
+    "valid-email": "Indique um email válido.",
+    "password-must-match": "A palavra-passe deve coincidir",
+    "save-changes": "Guardar alterações",
+    "error-loading": "Erro ao obter dados.",
+    "success": "Alterações guardadas com sucesso"
+  },
+  "reset": {
+    "title": "Redefinir palavra-passe",
+    "description": "Preencha um dos campos para redefinir a palavra-passe.",
+    "username": "Utilizador",
+    "email": "Email",
+    "email-invalid": "O email tem de ser válido",
+    "reset": "Redefinir",
+    "back-home": "Voltar à página inicial",
+    "success": "Verifique o email da conta para o link de redefinição."
+  },
+  "password-reset": {
+    "title": "Definir nova palavra-passe",
+    "description": "Preencha a nova palavra-passe.",
+    "success": "Palavra-passe redefinida com sucesso",
+    "new-password": "Nova palavra-passe *",
+    "confirm-new-password": "Confirmar nova palavra-passe *",
+    "required": "Este campo é obrigatório",
+    "passwords-mismatch": "As palavras-passe devem coincidir.",
+    "save-changes": "Guardar alterações",
+    "back-home": "Voltar à página inicial"
+  },
+  "activation": {
+    "activating": "A ativar a sua conta...",
+    "success": "Conta ativada com sucesso!",
+    "error": "Ocorreu um erro ao ativar a conta.",
+    "go-login": "Ir para o login"
+  },
+  "users": {
+    "title": "Utilizadores",
+    "active": "Ativo",
+    "filter-by": "Filtrar por",
+    "value": "Valor",
+    "enter-search-text": "Introduza o texto de pesquisa",
+    "search": "Pesquisar",
+    "clear": "Limpar",
+    "tab-users": "Utilizadores",
+    "tab-requests": "Pedidos",
+    "username": "Utilizador",
+    "email": "Email",
+    "date-created": "Data de criação",
+    "mail-sent": "Email enviado",
+    "no-users": "Nenhum utilizador encontrado."
+  },
+  "user-detail": {
+    "title-request": "Pedido de Utilizador",
+    "title-detail": "Detalhe do Utilizador",
+    "username": "Utilizador *",
+    "email": "Email *",
+    "role": "Função *",
+    "role-user": "Utilizador",
+    "role-admin": "Administrador",
+    "mail-sent": "Email enviado:",
+    "send-mail": "Enviar email",
+    "delete-request": "Eliminar pedido",
+    "save-changes": "Guardar alterações",
+    "activate": "Ativar",
+    "deactivate": "Desativar",
+    "close": "Fechar",
+    "required": "Este campo é obrigatório!",
+    "valid-email": "Indique um email válido.",
+    "image-webp": "A imagem deve ser .webp",
+    "image-size": "A imagem deve ter o tamanho máximo de 1,5MB",
+    "updated": "Utilizador atualizado",
+    "activated": "Utilizador ativado",
+    "deactivated": "Utilizador desativado",
+    "mail-sent-success": "Email enviado com sucesso",
+    "delete-confirm": "Tem a certeza de que quer eliminar este pedido?",
+    "request-deleted": "Pedido de utilizador eliminado."
+  },
+  "searchSelect": {
+    "placeholder": "Pesquisar ou criar lista",
+    "create": "Criar"
+  }
+}

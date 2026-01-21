@@ -10,20 +10,22 @@ import { TagsService } from '../../services/tagsService';
 import { TagComponent } from '../tag/tag';
 import { SearchSelectComponent } from '../../shared/search-select/search-select';
 import { Tag } from '../../models/tag';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-task',
-  imports: [ReactiveFormsModule, CommonModule, TagComponent, SearchSelectComponent],
+  imports: [ReactiveFormsModule, CommonModule, TagComponent, SearchSelectComponent, TranslatePipe],
   templateUrl: './task.html',
   styleUrl: './task.css',
 })
 export class TaskComponent {
-  private taskService = inject(TaskService);
-  private alertService = inject(AlertService);
-  private userListService = inject(UserListService);
-  private tagService = inject(TagsService);
+  private readonly taskService = inject(TaskService);
+  private readonly alertService = inject(AlertService);
+  private readonly userListService = inject(UserListService);
+  private readonly tagService = inject(TagsService);
+  private readonly translate = inject(TranslateService);
 
-  close = output<void>();
+  closeTask = output<void>();
   refreshTasks = output<void>();
   data = input<Task | undefined>();
 
@@ -69,7 +71,7 @@ export class TaskComponent {
   userTags = computed(() => {
     return this.tagService
       .userTags()
-      .filter((tag) => !this.selectedTags().find((t) => t.name === tag.name));
+      .filter((tag) => !this.selectedTags().some((t) => t.name === tag.name));
   });
 
   form = new FormGroup({
@@ -123,7 +125,7 @@ export class TaskComponent {
   }
 
   onClose() {
-    this.close.emit();
+    this.closeTask.emit();
   }
 
   onSubmit() {
@@ -151,7 +153,7 @@ export class TaskComponent {
             if (resp.id) {
               this.currentId = resp.id;
             }
-            this.alertService.addAlert('success', 'Task created with success');
+            this.alertService.addAlert('success', this.translate.instant('task.created-success'));
             this.refreshTasks.emit();
           },
           error: (error) => {
@@ -179,7 +181,7 @@ export class TaskComponent {
       return undefined;
     }
     const date = typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
-    if (isNaN(date.getTime())) {
+    if (Number.isNaN(date.getTime())) {
       return undefined;
     }
     const year = date.getFullYear();
@@ -193,6 +195,6 @@ export class TaskComponent {
       return undefined;
     }
     const parsed = new Date(dateValue);
-    return isNaN(parsed.getTime()) ? undefined : parsed;
+    return Number.isNaN(parsed.getTime()) ? undefined : parsed;
   }
 }

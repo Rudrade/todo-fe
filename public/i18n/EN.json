@@ -1,0 +1,185 @@
+{
+  "app": {
+    "username": "Username",
+    "password": "Password",
+    "email": "Email"
+  },
+  "common": {
+    "search": "Search",
+    "clear": "Clear",
+    "save-changes": "Save changes",
+    "create": "Create",
+    "close": "Close",
+    "back-home": "Back to homepage",
+    "back-login": "Back to login",
+    "today": "Today",
+    "yes": "Yes",
+    "no": "No",
+    "active": "Active",
+    "inactive": "Inactive",
+    "required": "This field is required.",
+    "valid-email": "Provide a valid email.",
+    "passwords-mismatch": "Passwords must match.",
+    "confirm-pending": "You change pending changes. Are you sure you want to exit?"
+  },
+  "login": {
+    "description": "Enter your credentials to continue.",
+    "login": "Login",
+    "register": "Register",
+    "reset-password": "Reset password",
+    "invalid": "Invalid user credentials"
+  },
+  "register": {
+    "title": "Create account",
+    "description": "Fill in the details to create your account.",
+    "username-required": "Username is required.",
+    "email-required": "Email is required.",
+    "email-invalid": "Enter a valid email.",
+    "password-required": "Password is required.",
+    "confirm-password": "Confirm password",
+    "confirm-password-required": "Please confirm your password.",
+    "passwords-mismatch": "Passwords must match.",
+    "submit": "Register",
+    "back-to-login": "Back to login",
+    "success": "Register completed. Please check your email for confirmation."
+  },
+  "menu": {
+    "title": "Menu",
+    "search-placeholder": "Search",
+    "tasks": "Tasks",
+    "all": "All",
+    "today": "Today",
+    "upcoming": "Upcoming",
+    "calendar": "Calendar",
+    "lists": "Lists",
+    "no-lists": "No lists found",
+    "tags": "Tags",
+    "no-tags": "No tags found",
+    "users": "Users",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "taskList": {
+    "add-new-task": "Add new task",
+    "no-tasks": "No tasks found",
+    "filter": {
+      "all": "All",
+      "today": "Today",
+      "upcoming": "Upcoming",
+      "search": "Search"
+    }
+  },
+  "task": {
+    "task": "Task",
+    "title": "Title",
+    "title-required": "This field is required!",
+    "description": "Description",
+    "due-date": "Due date",
+    "list": "List",
+    "tags": "Tags",
+    "save-changes": "Save changes",
+    "create": "Create",
+    "close": "Close",
+    "created-success": "Task created with success",
+    "completed": "Task completed"
+  },
+  "calendar": {
+    "today": "Today",
+    "weekday": {
+      "sun": "Sun",
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat"
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password *",
+    "new-password": "New password",
+    "confirm-new-password": "Confirm new password",
+    "required-to-update": "This field is required to update values.",
+    "valid-email": "Provide a valid email.",
+    "password-must-match": "Password must match",
+    "save-changes": "Save changes",
+    "error-loading": "Error getting data.",
+    "success": "Changes successfully"
+  },
+  "reset": {
+    "title": "Reset password",
+    "description": "Fill one of the fields to reset your password.",
+    "username": "Username",
+    "email": "Email",
+    "email-invalid": "Field must be a valid email address",
+    "reset": "Reset",
+    "back-home": "Back to homepage",
+    "success": "Please check the account's email for a reset link."
+  },
+  "password-reset": {
+    "title": "Define new password",
+    "description": "Fill the new password.",
+    "success": "Password reset successfully",
+    "new-password": "New Password *",
+    "confirm-new-password": "Confirm new password *",
+    "required": "This field is required",
+    "passwords-mismatch": "Passwords must match.",
+    "save-changes": "Save changes",
+    "back-home": "Back to homepage"
+  },
+  "activation": {
+    "activating": "Activating your account...",
+    "success": "Congratulations on activating your account!",
+    "error": "An error occurred while activating your account.",
+    "go-login": "Go to login page"
+  },
+  "users": {
+    "title": "Users",
+    "active": "Active",
+    "filter-by": "Filter by",
+    "value": "Value",
+    "enter-search-text": "Enter search text",
+    "search": "Search",
+    "clear": "Clear",
+    "tab-users": "Users",
+    "tab-requests": "Requests",
+    "username": "Username",
+    "email": "Email",
+    "date-created": "Date Created",
+    "mail-sent": "Mail sent",
+    "no-users": "No users found."
+  },
+  "user-detail": {
+    "title-request": "User Request",
+    "title-detail": "User Detail",
+    "username": "Username *",
+    "email": "Email *",
+    "role": "Role *",
+    "role-user": "User",
+    "role-admin": "Administrator",
+    "mail-sent": "Mail Sent:",
+    "send-mail": "Send Mail",
+    "delete-request": "Delete Request",
+    "save-changes": "Save changes",
+    "activate": "Activate",
+    "deactivate": "Deactivate",
+    "close": "Close",
+    "required": "This field is required!",
+    "valid-email": "Provide a valid email.",
+    "image-webp": "Image must be a .webp",
+    "image-size": "Image must be a maximum size of 1.5MB",
+    "updated": "User updated",
+    "activated": "User activated",
+    "deactivated": "User deactivated",
+    "mail-sent-success": "Mail sent successfully",
+    "delete-confirm": "Are you sure you want to delete this request?",
+    "request-deleted": "User request deleted."
+  },
+  "searchSelect": {
+    "placeholder": "Search or create list",
+    "create": "Create"
+  }
+}

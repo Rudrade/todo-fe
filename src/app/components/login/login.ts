@@ -6,11 +6,12 @@ import { Router, RouterModule } from '@angular/router';
 import { take } from 'rxjs';
 import { AlertService } from '../../services/alertService';
 import { AlertComponent } from '../../shared/alert/alert';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, AlertComponent, RouterModule, TranslatePipe],
   templateUrl: './login.html',
   styleUrls: ['./login.css'],
 })
@@ -18,6 +19,7 @@ export class LoginComponent implements OnInit {
   private readonly alertService = inject(AlertService);
   private readonly authService = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly translate = inject(TranslateService);
 
   alerts = this.alertService.allAlerts;
   error = signal<boolean>(false);
@@ -45,6 +47,7 @@ export class LoginComponent implements OnInit {
           .pipe(take(1))
           .subscribe({
             next: (resp) => {
+              this.translate.use(resp.language);
               this.authService.setImageUrl(resp.imageUrl);
               this.authService.setToken(resp.token);
               this.router.navigate(['/']);

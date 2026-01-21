@@ -1,44 +1,45 @@
 <section class="users-wrapper">
   <form class="row g-2 mb-3" [formGroup]="filterForm" (ngSubmit)="onSubmit()">
     <div class="d-flex align-items-center justify-content-between mb-3">
-      <h2 class="mb-0">Users</h2>
+      <h2 class="mb-0">{{ 'users.title' | translate }}</h2>
 
       @if (view() === 'user') {
       <div class="form-check form-switch">
         <input
           class="form-check-input"
           type="checkbox"
-          role="switch"
           id="onlyActive"
           formControlName="onlyActive"
           (click)="onToggleActive()"
         />
-        <label class="form-check-label" for="onlyActive">Active</label>
+        <label class="form-check-label" for="onlyActive">{{ 'users.active' | translate }}</label>
       </div>
       }
     </div>
 
     <div class="col-sm-3">
-      <label class="form-label" for="filterField">Filter by</label>
+      <label class="form-label" for="filterField">{{ 'users.filter-by' | translate }}</label>
       <select class="form-select" id="filterField" formControlName="filterField">
-        <option value="USERNAME">Username</option>
-        <option value="EMAIL">Email</option>
+        <option value="USERNAME">{{ 'users.username' | translate }}</option>
+        <option value="EMAIL">{{ 'users.email' | translate }}</option>
       </select>
     </div>
     <div class="col-sm-6">
-      <label class="form-label" for="filterValue">Value</label>
+      <label class="form-label" for="filterValue">{{ 'users.value' | translate }}</label>
       <input
         id="filterValue"
         type="text"
         class="form-control"
         formControlName="filterValue"
-        placeholder="Enter search text"
+        placeholder="{{ 'users.enter-search-text' | translate }}"
         autocomplete="off"
       />
     </div>
     <div class="col-sm-3 d-flex align-items-end gap-2">
-      <button class="btn btn-primary" type="submit">Search</button>
-      <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">Clear</button>
+      <button class="btn btn-primary" type="submit">{{ 'users.search' | translate }}</button>
+      <button class="btn btn-outline-secondary" type="button" (click)="clearSearch()">
+        {{ 'users.clear' | translate }}
+      </button>
     </div>
   </form>
 
@@ -48,14 +49,14 @@
         <a
           [class]="view() === 'user' ? 'nav-link active' : 'nav-link'"
           (click)="onChangeView('user')"
-          >Users</a
+          >{{ 'users.tab-users' | translate }}</a
         >
       </li>
       <li class="nav-item">
         <a
           [class]="view() === 'request' ? 'nav-link active' : 'nav-link'"
           (click)="onChangeView('request')"
-          >Requests</a
+          >{{ 'users.tab-requests' | translate }}</a
         >
       </li>
     </ul>
@@ -64,25 +65,23 @@
     <table class="table align-middle">
       <thead>
         <tr>
-          <th scope="col">Username</th>
-          <th scope="col">Email</th>
+          <th scope="col">{{ 'users.username' | translate }}</th>
+          <th scope="col">{{ 'users.email' | translate }}</th>
           @if (view() === 'request') {
-          <th scope="col">Date Created</th>
-          <th scope="col">Mail sent</th>
+          <th scope="col">{{ 'users.date-created' | translate }}</th>
+          <th scope="col">{{ 'users.mail-sent' | translate }}</th>
           } @else {
-          <th scope="col">Active</th>
+          <th scope="col">{{ 'users.active' | translate }}</th>
           }
         </tr>
       </thead>
       <tbody>
         @if (loading()) {
         <div class="d-flex justify-content-center">
-          <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
+          <div class="spinner-border" output="status"></div>
         </div>
         } @else if (!users().length) {
-        <p>No users found.</p>
+        <p>{{ 'users.no-users' | translate }}</p>
         } @else { @for (user of users(); track user.username) {
         <tr
           (click)="onOpenUser(user)"
@@ -96,14 +95,14 @@
           @if (view() === 'request') {
           <td>{{ formatDate(user.dtCreated) }}</td>
           <td [style]="`color:${user.mailSent ? 'green' : 'red'}`">
-            {{ user.mailSent ? 'Yes' : 'No' }}
+            {{ user.mailSent ? ('common.yes' | translate) : ('common.no' | translate) }}
           </td>
           } @else {
           <td>
             @if (user.active === false) {
-            <span class="badge bg-secondary">Inactive</span>
+            <span class="badge bg-secondary">{{ 'common.inactive' | translate }}</span>
             } @else {
-            <span class="badge bg-success">Active</span>
+            <span class="badge bg-success">{{ 'common.active' | translate }}</span>
             }
           </td>
           }
@@ -117,7 +116,7 @@
 @if (selectedUser()) {
 <app-user-detail
   [data]="selectedUser()"
-  (close)="onCloseUser()"
+  (closeUser)="onCloseUser()"
   (refreshUsers)="onRefreshUsers()"
 />
 }

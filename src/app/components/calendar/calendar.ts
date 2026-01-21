@@ -5,6 +5,7 @@ import { Task } from '../../models/task';
 import { AlertService } from '../../services/alertService';
 import { TaskService } from '../../services/taskService';
 import { TaskComponent } from '../task/task';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 
 interface CalendarDay {
   date: Date;
@@ -16,20 +17,30 @@ interface CalendarDay {
   selector: 'app-calendar',
   templateUrl: './calendar.html',
   styleUrl: './calendar.css',
-  imports: [CommonModule, TaskComponent],
+  imports: [CommonModule, TaskComponent, TranslatePipe],
 })
 export class CalendarComponent {
-  private taskService = inject(TaskService);
-  private alertService = inject(AlertService);
-  private destroyRef = inject(DestroyRef);
+  private readonly taskService = inject(TaskService);
+  private readonly alertService = inject(AlertService);
+  private readonly destroyRef = inject(DestroyRef);
+  private readonly translateService = inject(TranslateService);
 
-  weekDays = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  weekDays = [
+    'calendar.weekday.sun',
+    'calendar.weekday.mon',
+    'calendar.weekday.tue',
+    'calendar.weekday.wed',
+    'calendar.weekday.thu',
+    'calendar.weekday.fri',
+    'calendar.weekday.sat',
+  ];
   monthRef = signal(this.startOfMonth(new Date()));
   tasks = this.taskService.tasks;
   currentTask = signal<Task | undefined>(undefined);
 
   monthLabel = computed(() => {
-    return this.monthRef().toLocaleString(undefined, {
+    const locale = this.translateService.getCurrentLang() || undefined;
+    return this.monthRef().toLocaleString(locale, {
       month: 'long',
       year: 'numeric',
     });
@@ -57,10 +68,10 @@ export class CalendarComponent {
         tasks: key ? taskMap.get(key) ?? [] : [],
       };
 
-      if (weeks.length === 0 || weeks[weeks.length - 1].length === 7) {
+      if (weeks.length === 0 || weeks.at(-1)?.length === 7) {
         weeks.push([]);
       }
-      weeks[weeks.length - 1].push(day);
+      weeks.at(-1)?.push(day);
     }
 
     return weeks;
@@ -136,7 +147,7 @@ export class CalendarComponent {
       return undefined;
     }
     const date = typeof dateValue === 'string' ? new Date(dateValue) : dateValue;
-    if (isNaN(date.getTime())) {
+    if (Number.isNaN(date.getTime())) {
       return undefined;
     }
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
