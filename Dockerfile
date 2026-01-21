@@ -5,7 +5,7 @@ COPY package*.json ./
 RUN npm install
 COPY . .
 ARG ENV=development
-RUN npm run build -- --configuration ${ENV}
+RUN npm run build -- --configuration ${ENV} --base-href=/todo/
 
 # Configure nginx to run app
 FROM nginx:latest
