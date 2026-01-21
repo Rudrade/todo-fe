@@ -11,7 +11,7 @@ import { Language } from '../models/user';
   providedIn: 'root',
 })
 export class AuthService {
-  private readonly href = environment.apiAuthUrl;
+  private readonly href = environment.apiUrl + 'auth/';
   private readonly keyStorage = 'sessionData';
 
   private readonly httpClient = inject(HttpClient);
