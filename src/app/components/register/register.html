@@ -16,7 +16,7 @@
         autocomplete="off"
       />
       @if (form.controls.username.touched && form.controls.username.invalid) {
-      <small class="text-danger">{{ 'register.username-required' | translate }}</small>
+        <small class="text-danger">{{ 'register.username-required' | translate }}</small>
       }
     </div>
 
@@ -30,9 +30,9 @@
         autocomplete="off"
       />
       @if (form.controls.email.touched && form.controls.email.hasError('required')) {
-      <small class="text-danger">{{ 'register.email-required' | translate }}</small>
+        <small class="text-danger">{{ 'register.email-required' | translate }}</small>
       } @else if (form.controls.email.touched && form.controls.email.hasError('email')) {
-      <small class="text-danger">{{ 'register.email-invalid' | translate }}</small>
+        <small class="text-danger">{{ 'register.email-invalid' | translate }}</small>
       }
     </div>
 
@@ -46,7 +46,7 @@
         autocomplete="off"
       />
       @if (form.controls.password.touched && form.controls.password.invalid) {
-      <small class="text-danger">{{ 'register.password-required' | translate }}</small>
+        <small class="text-danger">{{ 'register.password-required' | translate }}</small>
       }
     </div>
 
@@ -62,10 +62,11 @@
         autocomplete="off"
       />
       @if (form.controls.confirmPassword.touched && form.hasError('passwordsMismatch')) {
-      <small class="text-danger">{{ 'register.passwords-mismatch' | translate }}</small>
-      } @else if (form.controls.confirmPassword.touched &&
-      form.controls.confirmPassword.hasError('required')) {
-      <small class="text-danger">{{ 'register.confirm-password-required' | translate }}</small>
+        <small class="text-danger">{{ 'register.passwords-mismatch' | translate }}</small>
+      } @else if (
+        form.controls.confirmPassword.touched && form.controls.confirmPassword.hasError('required')
+      ) {
+        <small class="text-danger">{{ 'register.confirm-password-required' | translate }}</small>
       }
     </div>
 
@@ -79,6 +80,8 @@
           id="input-language1"
           value="EN"
           (click)="onChangeLanguage('EN')"
+          onKeyDown=""
+          tabindex="0"
         />
         <label for="input-language1" class="form-check-label">
           <span class="fi fi-gb"></span>
@@ -94,6 +97,8 @@
           id="input-language2"
           value="PT"
           (click)="onChangeLanguage('PT')"
+          onKeyDown=""
+          tabindex="0"
         />
         <label for="input-language2" class="form-check-label">
           <span class="fi fi-pt"></span>
@@ -115,20 +120,20 @@
         {{ 'register.back-to-login' | translate }}
       </button>
     </div>
-    @if(submitting()) {
-    <div class="d-flex justify-content-center">
-      <div class="spinner-border" output="status"></div>
-    </div>
+    @if (submitting()) {
+      <div class="d-flex justify-content-center">
+        <div class="spinner-border" output="status"></div>
+      </div>
     }
   </form>
 
   @if (error()) {
-  <small class="text-danger">{{ error() }}</small>
+    <small class="text-danger">{{ error() }}</small>
   }
 </div>
 
 <div class="alerts">
   @for (alert of alerts(); track alert.id) {
-  <app-alert [data]="alert" />
+    <app-alert [data]="alert" />
   }
 </div>
